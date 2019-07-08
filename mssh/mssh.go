@@ -34,7 +34,7 @@ func Init() {
 	}
 	log.Println("ssh连接服务器成功")
 
-	server, err := Client.Listen("tcp", ":3000")
+	server, err := Client.Listen("tcp", "127.0.0.1:3000")
 
 	if err != nil {
 		log.Println(err.Error())
@@ -48,13 +48,11 @@ func Init() {
 		log.Println("接受连接后")
 
 		if err == nil {
-			log.Println("handle a conn")
-			client_s.Write([]byte{0x05, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00})
-
-			// go handleClientRequest(client_s)
+			log.Println("开始处理连接")
+			go handleClientRequest(client_s)
 		}
 		if err != nil {
-			log.Println(err.Error())
+			log.Println("处理连接错误：", err.Error())
 		}
 	}
 
@@ -68,13 +66,14 @@ func Init() {
 func handleClientRequest(client net.Conn) {
 	defer client.Close()
 
-	remote, err := Client.Dial("tcp", ":3000")
+	remote, err := net.Dial("tcp", ":3000")
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("转发错误：", err.Error())
 		return
 	}
 	defer remote.Close()
 
-	go io.Copy(client, remote)
-	io.Copy(remote, client)
+	go io.Copy(remote, client)
+	io.Copy(client, remote)
+
 }
