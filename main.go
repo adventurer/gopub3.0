@@ -4,16 +4,14 @@ import (
 	"net/http"
 
 	"github.com/kataras/iris"
-	_ "gopub3.0/model"
+
 	"gopub3.0/mssh"
 	"gopub3.0/route"
 )
 
 func main() {
-	go mssh.Init()
-	// mssh.Socks5ProxyStart()
-	// mssh.Dial2local(client)
 
+	go mssh.Begin()
 	app := iris.New()
 
 	route.Init(app)

@@ -13,7 +13,7 @@ func init() {
 	if err != nil {
 		panic(err.Error())
 	}
-	DB.LogMode(true)
+	DB.LogMode(false)
 
-	DB.AutoMigrate(&User{})
+	DB.AutoMigrate(&User{}, &Machine{}, Service{}, Project{}, Task{}, DeployStep{})
 }

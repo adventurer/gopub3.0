@@ -3,7 +3,6 @@ package model
 import (
 	"crypto/md5"
 	"fmt"
-	"log"
 	"time"
 )
 
@@ -28,7 +27,7 @@ func genPasswordHash(user *User) string {
 func ValidatePasswordHash(hash string) int {
 	findUser := User{}
 	DB.Where("password_hash = ?", hash).First(&findUser)
-	log.Println(findUser)
+	// log.Println(findUser)
 	if findUser.ID == 0 {
 		return 0
 	}
