@@ -20,6 +20,11 @@ func Init(app *iris.Application) {
 		v1.Post("user/login", api_v1.Login)
 
 		v1.Use(middwareAuth)
+		v1.Get("user/list", api_v1.UserList)
+		v1.Post("user/add", api_v1.UserAdd)
+		v1.Post("user/remove", api_v1.UserRemove)
+		v1.Post("user/repass", api_v1.UserResetPass)
+
 		v1.Get("welcome", api_v1.Welcome)
 		v1.Post("machine/add", api_v1.MachineAdd)
 		v1.Get("machine/list", api_v1.MachineList)
@@ -36,6 +41,7 @@ func Init(app *iris.Application) {
 		v1.Get("project/list", api_v1.ProjectList)
 		v1.Post("project/hostadd", api_v1.HostAdd)
 		v1.Post("project/init", api_v1.ProjectInit)
+		v1.Post("project/chaudit", api_v1.ProjectChangeAudit)
 
 		v1.Post("task/getversion", api_v1.GetVersions)
 		v1.Post("task/getversioninfo", api_v1.GetVersionInfo)
@@ -47,6 +53,9 @@ func Init(app *iris.Application) {
 		v1.Post("task/audit", api_v1.TaskAudit)
 		v1.Post("task/deploy", api_v1.TaskDeploy)
 		v1.Post("task/deploymessage", api_v1.DeployMessage)
+
+		v1.Post("cron/add", api_v1.ScheduleAdd)
+		v1.Get("cron/list", api_v1.ScheduleList)
 
 	}
 

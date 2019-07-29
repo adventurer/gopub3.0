@@ -140,6 +140,7 @@ func TaskAdd(ctx iris.Context) {
 	}
 	task.ProjectName = project.Name
 	task.TicketAt = time.Now()
+	task.Audit = project.Audit
 	model.DB.Create(&task)
 	if task.ID < 1 {
 		ctx.Write(model.NewResult(0, 0, "写入失败", []byte("")))
@@ -258,18 +259,20 @@ func TaskDeploy(ctx iris.Context) {
 				ctx.Write(model.NewResult(0, 0, err.Error(), []byte("")))
 				return
 			}
-			mlog.Mlog.Println("run remote command:", step.Action)
 
 			// 开始变量替换
 			action := strings.Replace(step.Action, "__version__", task.Version, -1)
 
+			mlog.Flog("publish.log", "[publish task run]", action)
 			output, err := cmd.RunRemote(conn, action)
+			mlog.Flog("publish.log", "[publish task result]", output)
+
 			if err != nil {
 				ctx.Write(model.NewResult(0, 0, output, []byte("")))
 				return
 			}
 			info(TaskID, machine.Name, k, output)
-			mlog.Mlog.Println("result:", output)
+			model.DB.Model(&task).Update(model.Task{Step: k})
 		}
 	}
 

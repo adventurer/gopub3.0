@@ -45,13 +45,6 @@ func init() {
 		}
 	}
 
-	go func() {
-		for {
-			mlog.Mlog.Printf("%#v", cpoll)
-			time.Sleep(1 * time.Second)
-		}
-	}()
-
 }
 
 func Begin() {

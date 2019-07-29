@@ -152,3 +152,22 @@ func ProjectInit(ctx iris.Context) {
 	ctx.Write(model.NewResult(1, 0, "初始化成功", []byte("")))
 
 }
+
+func ProjectChangeAudit(ctx iris.Context) {
+	projectID, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+
+	project := model.Project{ID: projectID}
+	model.DB.First(&project)
+	if project.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "未找到此项目", []byte("")))
+		return
+	}
+	project.Audit = (project.ID + 1) % 2
+	model.DB.Save(&project)
+	ctx.Write(model.NewResult(1, 0, "修改成功", ""))
+
+}

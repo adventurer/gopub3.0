@@ -14,7 +14,7 @@ func ValidateUser(user *User) (User, bool) {
 	}
 	hash := genPasswordHash(user)
 	findUser.PasswordHash = hash
-	DB.Model(&findUser).Update("password_hash", hash)
+	DB.Model(&findUser).Update(User{PasswordHash: hash, LastLogin: time.Now()})
 	return findUser, true
 }
 

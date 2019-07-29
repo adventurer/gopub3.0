@@ -7,6 +7,18 @@ import (
 	"time"
 )
 
+type Cron struct {
+	ID        int    `gorm:"AUTO_INCREMENT"`
+	Unique    string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Name      string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Schedule  string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Cmd       string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Machine   string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Status    int    `gorm:"default:0"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
 type Task struct {
 	ID          int    `gorm:"AUTO_INCREMENT"`
 	Name        string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
@@ -50,11 +62,13 @@ type DeployStep struct {
 
 type User struct {
 	ID           int    `gorm:"AUTO_INCREMENT"`
-	Email        string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
-	Password     string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Name         string `gorm:"size:255"`        // string默认长度为255, 使用这种tag重设。
+	Email        string `gorm:"unique;size:255"` // string默认长度为255, 使用这种tag重设。
+	Password     string `gorm:"size:255"`        // string默认长度为255, 使用这种tag重设。
 	PasswordHash string `gorm:"size:255"`
 	Status       int
 	Role         int
+	LastLogin    time.Time `gorm:"default:null"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }

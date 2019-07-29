@@ -1,0 +1,10 @@
+[publish task run]2019/07/27 11:10:48 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/27 11:10:48 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/27 11:10:59 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/27 11:10:59 Fetching origin
+
+[publish task run]2019/07/27 11:11:00 cd /home/wwwdoc/lugongzi_jianti_1/ && git reset --hard 5e2bfa8
+[publish task result]2019/07/27 11:11:00 HEAD is now at 5e2bfa8 '首页新房间距加大'
+

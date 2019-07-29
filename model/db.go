@@ -15,5 +15,14 @@ func init() {
 	}
 	DB.LogMode(false)
 
-	DB.AutoMigrate(&User{}, &Machine{}, Service{}, Project{}, Task{}, DeployStep{})
+	DB.AutoMigrate(&User{}, &Machine{}, Service{}, Project{}, Task{}, DeployStep{}, Cron{})
+	initAdmin()
+}
+
+func initAdmin() {
+	user := User{Email: "admin@qq.com"}
+	DB.Where("email = ?", "admin@qq.com").First(&user)
+	if user.ID <= 0 {
+		DB.Create(&User{Email: "admin@qq.com", Password: "w123123", Name: "管理员", Status: 1, Role: 999})
+	}
 }
