@@ -1,0 +1,861 @@
+[local command run]2019/07/30 17:41:07 cd repository/www.lugongzi.net.cn.v2.main.git && git fetch --all && git reset --hard origin/master && git pull && git log -20 --pretty="%h - %an - %s - %cD"
+[local command result]2019/07/30 17:41:07 Fetching origin
+HEAD is now at 070c58f 基本修改完成
+Already up to date.
+070c58f - lkiven - 基本修改完成 - Fri, 26 Jul 2019 17:52:53 +0800
+cc61aa2 - lkiven - 改版，首页，搜索 - Thu, 25 Jul 2019 18:08:15 +0800
+7c30d73 - lkiven - 准备重构 - Thu, 25 Jul 2019 09:33:03 +0800
+5e2bfa8 - lkiven - '首页新房间距加大' - Tue, 9 Jul 2019 15:04:47 +0800
+c974d2c - wuyang - 更新 'app/Models/NewHouse.php' - Tue, 9 Jul 2019 01:46:20 +0000
+06bdb50 - lkiven - .env.example. - Fri, 5 Jul 2019 16:41:13 +0800
+e5cd8eb - lkiven - 图片前缀增加.env配置 - Fri, 5 Jul 2019 16:39:56 +0800
+b3c4cc0 - lkiven - 4 - Thu, 4 Jul 2019 17:36:01 +0800
+ca988aa - lkiven - 3 - Thu, 4 Jul 2019 17:03:08 +0800
+358d66d - lkiven - 2 - Thu, 4 Jul 2019 09:11:27 +0800
+431a6ee - lkiven - 1 - Tue, 2 Jul 2019 09:48:03 +0800
+b974a6e - lkiven - 1 - Tue, 2 Jul 2019 09:07:35 +0800
+54876b7 - lkiven - Merge branch 'master' of http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main - Mon, 1 Jul 2019 18:11:18 +0800
+f0496b0 - lkiven - 1 - Mon, 1 Jul 2019 18:11:05 +0800
+a33009c - Gogs - 隐藏不用模块 - Mon, 1 Jul 2019 17:55:50 +0800
+42c1ba1 - lkiven - 友联 - Mon, 1 Jul 2019 17:36:06 +0800
+eae5df6 - lkiven - 登录 - Mon, 1 Jul 2019 09:08:05 +0800
+9cfdb11 - lkiven - 1 - Sat, 29 Jun 2019 12:15:11 +0800
+748996f - lkiven - 1 - Sat, 29 Jun 2019 11:02:04 +0800
+363602b - lkiven - 1 - Sat, 29 Jun 2019 11:00:50 +0800
+
+[local command run]2019/07/30 17:41:09 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 cc61aa2
+[local command result]2019/07/30 17:41:09 commit cc61aa20a3221343bae7cb39e9184b7ce9c9af4e
+Author: lkiven <zz_lkw@163.com>
+Date:   Thu Jul 25 18:08:15 2019 +0800
+
+    改版，首页，搜索
+
+ .idea/workspace.xml                               |  607 ++++---
+ app/Common/Help/helps.php                         |   41 +
+ app/Http/Controllers/Home/BaseController.php      |   14 +
+ app/Http/Controllers/Home/IndexController.php     |   46 +
+ app/Http/Controllers/Home/LoginController.php     |  100 ++
+ app/Http/Controllers/Home/NewDetailController.php |  205 +++
+ app/Http/Controllers/Home/NewSearchController.php |  365 ++++
+ app/Http/Controllers/Home/TestController.php      |  366 ++++
+ app/Http/Controllers/Home/UserController.php      |   78 +
+ app/Models/GroupHouse.php                         |    5 +-
+ app/Models/GroupHouseImg.php                      |    1 +
+ app/Models/NewHouse.php                           |   10 +-
+ app/Models/UsedHouse.php                          |   12 +
+ app/Models/UsedHouseImage.php                     |   26 +
+ public/static.zip                                 |  Bin 0 -> 5662049 bytes
+ public/static/css - 副本/common.css             |    1 -
+ public/static/css - 副本/detail.min.css         |    9 -
+ public/static/css - 副本/style.css              | 1531 ----------------
+ public/static/css - 副本/swiper.css             |   15 -
+ public/static/css - 副本/video-js.min.css       |    1 -
+ public/static/css - 副本/zdialog.css            |  226 ---
+ public/static/css/common.css                      |    2 +-
+ public/static/css/style.css                       | 1996 ++++++++++++---------
+ public/static/images/icon.png                     |  Bin 0 -> 19906 bytes
+ public/static/images/m_green.png                  |  Bin 0 -> 1233 bytes
+ public/static/images/m_red.png                    |  Bin 0 -> 1237 bytes
+ public/static/img/1.png                           |  Bin 1904 -> 10529 bytes
+ public/static/img/2.png                           |  Bin 3052 -> 10069 bytes
+ public/static/img/3.png                           |  Bin 3315 -> 8814 bytes
+ public/static/img/4.png                           |  Bin 0 -> 9845 bytes
+ public/static/img/5.png                           |  Bin 0 -> 9475 bytes
+ public/static/img/addres.png                      |  Bin 0 -> 4609 bytes
+ public/static/img/address.png                     |  Bin 4682 -> 3953 bytes
+ public/static/img/bao.png                         |  Bin 880 -> 1925 bytes
+ public/static/img/baotuan.png                     |  Bin 0 -> 4810 bytes
+ public/static/img/collection.png                  |  Bin 4086 -> 3747 bytes
+ public/static/img/def-video-cover.png             |  Bin 22520 -> 0 bytes
+ public/static/img/demo.png                        |  Bin 1590508 -> 99197 bytes
+ public/static/img/erweima.png                     |  Bin 2489 -> 2528 bytes
+ public/static/img/huxin.png                       |  Bin 0 -> 1817 bytes
+ public/static/img/index.png                       |  Bin 2206298 -> 1544094 bytes
+ public/static/img/jisuan.png                      |  Bin 0 -> 2572 bytes
+ public/static/img/logo2.png                       |  Bin 0 -> 34627 bytes
+ public/static/img/phone.png                       |  Bin 3730 -> 6096 bytes
+ public/static/img/q.png                           |  Bin 0 -> 455611 bytes
+ public/static/img/sige.png                        |  Bin 0 -> 629 bytes
+ public/static/layui.zip                           |  Bin 589339 -> 0 bytes
+ resources/views/home/index/index.blade.php        |  423 +++++
+ resources/views/home/layout/footer.blade.php      |   36 +
+ resources/views/home/layout/header.blade.php      |   13 +
+ resources/views/home/layout/login.blade.php       |  127 ++
+ resources/views/home/layout/nav.blade.php         |   32 +
+ resources/views/home/layout/page.blade.php        |   74 +
+ resources/views/home/newdetail/index.blade.php    |  751 ++++++++
+ resources/views/home/newsearch/index.blade.php    |  416 +++++
+ resources/views/home/test/city.blade.php          |  113 ++
+ resources/views/home/test/index.blade.php         |  294 +++
+ resources/views/home/user/group.blade.php         |    1 +
+ resources/views/home/user/new_collect.blade.php   |  190 ++
+ resources/views/home/user/new_order.blade.php     |  190 ++
+ routes/web.php                                    |  120 +-
+ 61 files changed, 5463 insertions(+), 2974 deletions(-)
+
+[local command run]2019/07/30 17:41:12 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 HEAD is
+[local command run]2019/07/30 17:44:13 cd repository/www.lugongzi.net.cn.v2.main.git && git fetch --all && git reset --hard origin/master && git pull && git log -20 --pretty="%h - %an - %s - %cD"
+[local command result]2019/07/30 17:44:13 Fetching origin
+HEAD is now at 070c58f 基本修改完成
+Already up to date.
+070c58f - lkiven - 基本修改完成 - Fri, 26 Jul 2019 17:52:53 +0800
+cc61aa2 - lkiven - 改版，首页，搜索 - Thu, 25 Jul 2019 18:08:15 +0800
+7c30d73 - lkiven - 准备重构 - Thu, 25 Jul 2019 09:33:03 +0800
+5e2bfa8 - lkiven - '首页新房间距加大' - Tue, 9 Jul 2019 15:04:47 +0800
+c974d2c - wuyang - 更新 'app/Models/NewHouse.php' - Tue, 9 Jul 2019 01:46:20 +0000
+06bdb50 - lkiven - .env.example. - Fri, 5 Jul 2019 16:41:13 +0800
+e5cd8eb - lkiven - 图片前缀增加.env配置 - Fri, 5 Jul 2019 16:39:56 +0800
+b3c4cc0 - lkiven - 4 - Thu, 4 Jul 2019 17:36:01 +0800
+ca988aa - lkiven - 3 - Thu, 4 Jul 2019 17:03:08 +0800
+358d66d - lkiven - 2 - Thu, 4 Jul 2019 09:11:27 +0800
+431a6ee - lkiven - 1 - Tue, 2 Jul 2019 09:48:03 +0800
+b974a6e - lkiven - 1 - Tue, 2 Jul 2019 09:07:35 +0800
+54876b7 - lkiven - Merge branch 'master' of http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main - Mon, 1 Jul 2019 18:11:18 +0800
+f0496b0 - lkiven - 1 - Mon, 1 Jul 2019 18:11:05 +0800
+a33009c - Gogs - 隐藏不用模块 - Mon, 1 Jul 2019 17:55:50 +0800
+42c1ba1 - lkiven - 友联 - Mon, 1 Jul 2019 17:36:06 +0800
+eae5df6 - lkiven - 登录 - Mon, 1 Jul 2019 09:08:05 +0800
+9cfdb11 - lkiven - 1 - Sat, 29 Jun 2019 12:15:11 +0800
+748996f - lkiven - 1 - Sat, 29 Jun 2019 11:02:04 +0800
+363602b - lkiven - 1 - Sat, 29 Jun 2019 11:00:50 +0800
+
+[local command run]2019/07/30 17:46:43 cd repository/www.lugongzi.net.cn.v2.main.git && git fetch --all && git reset --hard origin/master && git pull
+[local command result]2019/07/30 17:46:43 Fetching origin
+HEAD is now at 070c58f 基本修改完成
+Already up to date.
+
+[local command run]2019/07/30 17:46:43 cd repository/www.lugongzi.net.cn.v2.main.git && git log -20 --pretty="%h - %an - %s - %cD"
+[local command result]2019/07/30 17:46:43 070c58f - lkiven - 基本修改完成 - Fri, 26 Jul 2019 17:52:53 +0800
+cc61aa2 - lkiven - 改版，首页，搜索 - Thu, 25 Jul 2019 18:08:15 +0800
+7c30d73 - lkiven - 准备重构 - Thu, 25 Jul 2019 09:33:03 +0800
+5e2bfa8 - lkiven - '首页新房间距加大' - Tue, 9 Jul 2019 15:04:47 +0800
+c974d2c - wuyang - 更新 'app/Models/NewHouse.php' - Tue, 9 Jul 2019 01:46:20 +0000
+06bdb50 - lkiven - .env.example. - Fri, 5 Jul 2019 16:41:13 +0800
+e5cd8eb - lkiven - 图片前缀增加.env配置 - Fri, 5 Jul 2019 16:39:56 +0800
+b3c4cc0 - lkiven - 4 - Thu, 4 Jul 2019 17:36:01 +0800
+ca988aa - lkiven - 3 - Thu, 4 Jul 2019 17:03:08 +0800
+358d66d - lkiven - 2 - Thu, 4 Jul 2019 09:11:27 +0800
+431a6ee - lkiven - 1 - Tue, 2 Jul 2019 09:48:03 +0800
+b974a6e - lkiven - 1 - Tue, 2 Jul 2019 09:07:35 +0800
+54876b7 - lkiven - Merge branch 'master' of http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main - Mon, 1 Jul 2019 18:11:18 +0800
+f0496b0 - lkiven - 1 - Mon, 1 Jul 2019 18:11:05 +0800
+a33009c - Gogs - 隐藏不用模块 - Mon, 1 Jul 2019 17:55:50 +0800
+42c1ba1 - lkiven - 友联 - Mon, 1 Jul 2019 17:36:06 +0800
+eae5df6 - lkiven - 登录 - Mon, 1 Jul 2019 09:08:05 +0800
+9cfdb11 - lkiven - 1 - Sat, 29 Jun 2019 12:15:11 +0800
+748996f - lkiven - 1 - Sat, 29 Jun 2019 11:02:04 +0800
+363602b - lkiven - 1 - Sat, 29 Jun 2019 11:00:50 +0800
+
+[local command run]2019/07/30 17:46:45 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 070c58f
+[local command result]2019/07/30 17:46:45 commit 070c58f4740c6217dcba02336cc21f101ea94d8d
+Author: lkiven <zz_lkw@163.com>
+Date:   Fri Jul 26 17:52:53 2019 +0800
+
+    基本修改完成
+
+ .idea/workspace.xml                               |  413 +++--
+ app/Http/Controllers/Home/NewDetailController.php |  147 +-
+ app/Http/Controllers/Home/UserController.php      |    6 +-
+ public/static/css/style.css                       | 1951 ++++++++++-----------
+ public/static/img/not_img.png                     |  Bin 0 -> 2879 bytes
+ resources/views/home/index/index.blade.php        |  107 +-
+ resources/views/home/newdetail/index.blade.php    |  535 +++---
+ resources/views/home/newsearch/index.blade.php    |   19 +-
+ resources/views/home/user/new_collect.blade.php   |   11 +-
+ resources/views/home/user/new_order.blade.php     |    8 +-
+ 10 files changed, 1762 insertions(+), 1435 deletions(-)
+
+[local command run]2019/07/30 17:46:48 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 7c30d73
+[local command result]2019/07/30 17:46:48 commit 7c30d730a79fa63c5e6ae079889ec416cb869651
+Author: lkiven <zz_lkw@163.com>
+Date:   Thu Jul 25 09:33:03 2019 +0800
+
+    准备重构
+
+ .idea/workspace.xml | 204 ++++++++++++++++++++++++++++------------------------
+ 1 file changed, 111 insertions(+), 93 deletions(-)
+
+[local command run]2019/07/30 17:47:34 cd repository/www.lugongzi.net.cn.v2.main.git && git fetch --all && git reset --hard origin/master && git pull
+[local command result]2019/07/30 17:47:34 Fetching origin
+HEAD is now at 070c58f 基本修改完成
+Already up to date.
+
+[local command run]2019/07/30 17:47:34 cd repository/www.lugongzi.net.cn.v2.main.git && git log -20 --pretty="%h - %an - %s - %cD"
+[local command result]2019/07/30 17:47:34 070c58f - lkiven - 基本修改完成 - Fri, 26 Jul 2019 17:52:53 +0800
+cc61aa2 - lkiven - 改版，首页，搜索 - Thu, 25 Jul 2019 18:08:15 +0800
+7c30d73 - lkiven - 准备重构 - Thu, 25 Jul 2019 09:33:03 +0800
+5e2bfa8 - lkiven - '首页新房间距加大' - Tue, 9 Jul 2019 15:04:47 +0800
+c974d2c - wuyang - 更新 'app/Models/NewHouse.php' - Tue, 9 Jul 2019 01:46:20 +0000
+06bdb50 - lkiven - .env.example. - Fri, 5 Jul 2019 16:41:13 +0800
+e5cd8eb - lkiven - 图片前缀增加.env配置 - Fri, 5 Jul 2019 16:39:56 +0800
+b3c4cc0 - lkiven - 4 - Thu, 4 Jul 2019 17:36:01 +0800
+ca988aa - lkiven - 3 - Thu, 4 Jul 2019 17:03:08 +0800
+358d66d - lkiven - 2 - Thu, 4 Jul 2019 09:11:27 +0800
+431a6ee - lkiven - 1 - Tue, 2 Jul 2019 09:48:03 +0800
+b974a6e - lkiven - 1 - Tue, 2 Jul 2019 09:07:35 +0800
+54876b7 - lkiven - Merge branch 'master' of http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main - Mon, 1 Jul 2019 18:11:18 +0800
+f0496b0 - lkiven - 1 - Mon, 1 Jul 2019 18:11:05 +0800
+a33009c - Gogs - 隐藏不用模块 - Mon, 1 Jul 2019 17:55:50 +0800
+42c1ba1 - lkiven - 友联 - Mon, 1 Jul 2019 17:36:06 +0800
+eae5df6 - lkiven - 登录 - Mon, 1 Jul 2019 09:08:05 +0800
+9cfdb11 - lkiven - 1 - Sat, 29 Jun 2019 12:15:11 +0800
+748996f - lkiven - 1 - Sat, 29 Jun 2019 11:02:04 +0800
+363602b - lkiven - 1 - Sat, 29 Jun 2019 11:00:50 +0800
+
+[local command run]2019/07/30 17:47:35 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 cc61aa2
+[local command result]2019/07/30 17:47:35 commit cc61aa20a3221343bae7cb39e9184b7ce9c9af4e
+Author: lkiven <zz_lkw@163.com>
+Date:   Thu Jul 25 18:08:15 2019 +0800
+
+    改版，首页，搜索
+
+ .idea/workspace.xml                               |  607 ++++---
+ app/Common/Help/helps.php                         |   41 +
+ app/Http/Controllers/Home/BaseController.php      |   14 +
+ app/Http/Controllers/Home/IndexController.php     |   46 +
+ app/Http/Controllers/Home/LoginController.php     |  100 ++
+ app/Http/Controllers/Home/NewDetailController.php |  205 +++
+ app/Http/Controllers/Home/NewSearchController.php |  365 ++++
+ app/Http/Controllers/Home/TestController.php      |  366 ++++
+ app/Http/Controllers/Home/UserController.php      |   78 +
+ app/Models/GroupHouse.php                         |    5 +-
+ app/Models/GroupHouseImg.php                      |    1 +
+ app/Models/NewHouse.php                           |   10 +-
+ app/Models/UsedHouse.php                          |   12 +
+ app/Models/UsedHouseImage.php                     |   26 +
+ public/static.zip                                 |  Bin 0 -> 5662049 bytes
+ public/static/css - 副本/common.css             |    1 -
+ public/static/css - 副本/detail.min.css         |    9 -
+ public/static/css - 副本/style.css              | 1531 ----------------
+ public/static/css - 副本/swiper.css             |   15 -
+ public/static/css - 副本/video-js.min.css       |    1 -
+ public/static/css - 副本/zdialog.css            |  226 ---
+ public/static/css/common.css                      |    2 +-
+ public/static/css/style.css                       | 1996 ++++++++++++---------
+ public/static/images/icon.png                     |  Bin 0 -> 19906 bytes
+ public/static/images/m_green.png                  |  Bin 0 -> 1233 bytes
+ public/static/images/m_red.png                    |  Bin 0 -> 1237 bytes
+ public/static/img/1.png                           |  Bin 1904 -> 10529 bytes
+ public/static/img/2.png                           |  Bin 3052 -> 10069 bytes
+ public/static/img/3.png                           |  Bin 3315 -> 8814 bytes
+ public/static/img/4.png                           |  Bin 0 -> 9845 bytes
+ public/static/img/5.png                           |  Bin 0 -> 9475 bytes
+ public/static/img/addres.png                      |  Bin 0 -> 4609 bytes
+ public/static/img/address.png                     |  Bin 4682 -> 3953 bytes
+ public/static/img/bao.png                         |  Bin 880 -> 1925 bytes
+ public/static/img/baotuan.png                     |  Bin 0 -> 4810 bytes
+ public/static/img/collection.png                  |  Bin 4086 -> 3747 bytes
+ public/static/img/def-video-cover.png             |  Bin 22520 -> 0 bytes
+ public/static/img/demo.png                        |  Bin 1590508 -> 99197 bytes
+ public/static/img/erweima.png                     |  Bin 2489 -> 2528 bytes
+ public/static/img/huxin.png                       |  Bin 0 -> 1817 bytes
+ public/static/img/index.png                       |  Bin 2206298 -> 1544094 bytes
+ public/static/img/jisuan.png                      |  Bin 0 -> 2572 bytes
+ public/static/img/logo2.png                       |  Bin 0 -> 34627 bytes
+ public/static/img/phone.png                       |  Bin 3730 -> 6096 bytes
+ public/static/img/q.png                           |  Bin 0 -> 455611 bytes
+ public/static/img/sige.png                        |  Bin 0 -> 629 bytes
+ public/static/layui.zip                           |  Bin 589339 -> 0 bytes
+ resources/views/home/index/index.blade.php        |  423 +++++
+ resources/views/home/layout/footer.blade.php      |   36 +
+ resources/views/home/layout/header.blade.php      |   13 +
+ resources/views/home/layout/login.blade.php       |  127 ++
+ resources/views/home/layout/nav.blade.php         |   32 +
+ resources/views/home/layout/page.blade.php        |   74 +
+ resources/views/home/newdetail/index.blade.php    |  751 ++++++++
+ resources/views/home/newsearch/index.blade.php    |  416 +++++
+ resources/views/home/test/city.blade.php          |  113 ++
+ resources/views/home/test/index.blade.php         |  294 +++
+ resources/views/home/user/group.blade.php         |    1 +
+ resources/views/home/user/new_collect.blade.php   |  190 ++
+ resources/views/home/user/new_order.blade.php     |  190 ++
+ routes/web.php                                    |  120 +-
+ 61 files changed, 5463 insertions(+), 2974 deletions(-)
+
+[local command run]2019/07/30 17:48:07 cd repository/www.lugongzi.net.cn.v2.main.git && git fetch --all && git reset --hard origin/master && git pull
+[local command result]2019/07/30 17:48:07 Fetching origin
+HEAD is now at 070c58f 基本修改完成
+Already up to date.
+
+[local command run]2019/07/30 17:48:07 cd repository/www.lugongzi.net.cn.v2.main.git && git log -20 --pretty="%h - %an - %s - %cD"
+[local command result]2019/07/30 17:48:07 070c58f - lkiven - 基本修改完成 - Fri, 26 Jul 2019 17:52:53 +0800
+cc61aa2 - lkiven - 改版，首页，搜索 - Thu, 25 Jul 2019 18:08:15 +0800
+7c30d73 - lkiven - 准备重构 - Thu, 25 Jul 2019 09:33:03 +0800
+5e2bfa8 - lkiven - '首页新房间距加大' - Tue, 9 Jul 2019 15:04:47 +0800
+c974d2c - wuyang - 更新 'app/Models/NewHouse.php' - Tue, 9 Jul 2019 01:46:20 +0000
+06bdb50 - lkiven - .env.example. - Fri, 5 Jul 2019 16:41:13 +0800
+e5cd8eb - lkiven - 图片前缀增加.env配置 - Fri, 5 Jul 2019 16:39:56 +0800
+b3c4cc0 - lkiven - 4 - Thu, 4 Jul 2019 17:36:01 +0800
+ca988aa - lkiven - 3 - Thu, 4 Jul 2019 17:03:08 +0800
+358d66d - lkiven - 2 - Thu, 4 Jul 2019 09:11:27 +0800
+431a6ee - lkiven - 1 - Tue, 2 Jul 2019 09:48:03 +0800
+b974a6e - lkiven - 1 - Tue, 2 Jul 2019 09:07:35 +0800
+54876b7 - lkiven - Merge branch 'master' of http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main - Mon, 1 Jul 2019 18:11:18 +0800
+f0496b0 - lkiven - 1 - Mon, 1 Jul 2019 18:11:05 +0800
+a33009c - Gogs - 隐藏不用模块 - Mon, 1 Jul 2019 17:55:50 +0800
+42c1ba1 - lkiven - 友联 - Mon, 1 Jul 2019 17:36:06 +0800
+eae5df6 - lkiven - 登录 - Mon, 1 Jul 2019 09:08:05 +0800
+9cfdb11 - lkiven - 1 - Sat, 29 Jun 2019 12:15:11 +0800
+748996f - lkiven - 1 - Sat, 29 Jun 2019 11:02:04 +0800
+363602b - lkiven - 1 - Sat, 29 Jun 2019 11:00:50 +0800
+
+[local command run]2019/07/30 17:48:09 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 070c58f
+[local command result]2019/07/30 17:48:09 commit 070c58f4740c6217dcba02336cc21f101ea94d8d
+Author: lkiven <zz_lkw@163.com>
+Date:   Fri Jul 26 17:52:53 2019 +0800
+
+    基本修改完成
+
+ .idea/workspace.xml                               |  413 +++--
+ app/Http/Controllers/Home/NewDetailController.php |  147 +-
+ app/Http/Controllers/Home/UserController.php      |    6 +-
+ public/static/css/style.css                       | 1951 ++++++++++-----------
+ public/static/img/not_img.png                     |  Bin 0 -> 2879 bytes
+ resources/views/home/index/index.blade.php        |  107 +-
+ resources/views/home/newdetail/index.blade.php    |  535 +++---
+ resources/views/home/newsearch/index.blade.php    |   19 +-
+ resources/views/home/user/new_collect.blade.php   |   11 +-
+ resources/views/home/user/new_order.blade.php     |    8 +-
+ 10 files changed, 1762 insertions(+), 1435 deletions(-)
+
+[local command run]2019/07/30 17:48:12 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 cc61aa2
+[local command result]2019/07/30 17:48:12 commit cc61aa20a3221343bae7cb39e9184b7ce9c9af4e
+Author: lkiven <zz_lkw@163.com>
+Date:   Thu Jul 25 18:08:15 2019 +0800
+
+    改版，首页，搜索
+
+ .idea/workspace.xml                               |  607 ++++---
+ app/Common/Help/helps.php                         |   41 +
+ app/Http/Controllers/Home/BaseController.php      |   14 +
+ app/Http/Controllers/Home/IndexController.php     |   46 +
+ app/Http/Controllers/Home/LoginController.php     |  100 ++
+ app/Http/Controllers/Home/NewDetailController.php |  205 +++
+ app/Http/Controllers/Home/NewSearchController.php |  365 ++++
+ app/Http/Controllers/Home/TestController.php      |  366 ++++
+ app/Http/Controllers/Home/UserController.php      |   78 +
+ app/Models/GroupHouse.php                         |    5 +-
+ app/Models/GroupHouseImg.php                      |    1 +
+ app/Models/NewHouse.php                           |   10 +-
+ app/Models/UsedHouse.php                          |   12 +
+ app/Models/UsedHouseImage.php                     |   26 +
+ public/static.zip                                 |  Bin 0 -> 5662049 bytes
+ public/static/css - 副本/common.css             |    1 -
+ public/static/css - 副本/detail.min.css         |    9 -
+ public/static/css - 副本/style.css              | 1531 ----------------
+ public/static/css - 副本/swiper.css             |   15 -
+ public/static/css - 副本/video-js.min.css       |    1 -
+ public/static/css - 副本/zdialog.css            |  226 ---
+ public/static/css/common.css                      |    2 +-
+ public/static/css/style.css                       | 1996 ++++++++++++---------
+ public/static/images/icon.png                     |  Bin 0 -> 19906 bytes
+ public/static/images/m_green.png                  |  Bin 0 -> 1233 bytes
+ public/static/images/m_red.png                    |  Bin 0 -> 1237 bytes
+ public/static/img/1.png                           |  Bin 1904 -> 10529 bytes
+ public/static/img/2.png                           |  Bin 3052 -> 10069 bytes
+ public/static/img/3.png                           |  Bin 3315 -> 8814 bytes
+ public/static/img/4.png                           |  Bin 0 -> 9845 bytes
+ public/static/img/5.png                           |  Bin 0 -> 9475 bytes
+ public/static/img/addres.png                      |  Bin 0 -> 4609 bytes
+ public/static/img/address.png                     |  Bin 4682 -> 3953 bytes
+ public/static/img/bao.png                         |  Bin 880 -> 1925 bytes
+ public/static/img/baotuan.png                     |  Bin 0 -> 4810 bytes
+ public/static/img/collection.png                  |  Bin 4086 -> 3747 bytes
+ public/static/img/def-video-cover.png             |  Bin 22520 -> 0 bytes
+ public/static/img/demo.png                        |  Bin 1590508 -> 99197 bytes
+ public/static/img/erweima.png                     |  Bin 2489 -> 2528 bytes
+ public/static/img/huxin.png                       |  Bin 0 -> 1817 bytes
+ public/static/img/index.png                       |  Bin 2206298 -> 1544094 bytes
+ public/static/img/jisuan.png                      |  Bin 0 -> 2572 bytes
+ public/static/img/logo2.png                       |  Bin 0 -> 34627 bytes
+ public/static/img/phone.png                       |  Bin 3730 -> 6096 bytes
+ public/static/img/q.png                           |  Bin 0 -> 455611 bytes
+ public/static/img/sige.png                        |  Bin 0 -> 629 bytes
+ public/static/layui.zip                           |  Bin 589339 -> 0 bytes
+ resources/views/home/index/index.blade.php        |  423 +++++
+ resources/views/home/layout/footer.blade.php      |   36 +
+ resources/views/home/layout/header.blade.php      |   13 +
+ resources/views/home/layout/login.blade.php       |  127 ++
+ resources/views/home/layout/nav.blade.php         |   32 +
+ resources/views/home/layout/page.blade.php        |   74 +
+ resources/views/home/newdetail/index.blade.php    |  751 ++++++++
+ resources/views/home/newsearch/index.blade.php    |  416 +++++
+ resources/views/home/test/city.blade.php          |  113 ++
+ resources/views/home/test/index.blade.php         |  294 +++
+ resources/views/home/user/group.blade.php         |    1 +
+ resources/views/home/user/new_collect.blade.php   |  190 ++
+ resources/views/home/user/new_order.blade.php     |  190 ++
+ routes/web.php                                    |  120 +-
+ 61 files changed, 5463 insertions(+), 2974 deletions(-)
+
+[local command run]2019/07/30 17:54:41 cd repository/www.lugongzi.net.cn.v2.main.git && git fetch --all && git reset --hard origin/master && git pull
+[local command result]2019/07/30 17:54:41 Fetching origin
+HEAD is now at 070c58f 基本修改完成
+Already up to date.
+
+[local command run]2019/07/30 17:54:41 cd repository/www.lugongzi.net.cn.v2.main.git && git log -20 --pretty="%h - %an - %s - %cD"
+[local command result]2019/07/30 17:54:41 070c58f - lkiven - 基本修改完成 - Fri, 26 Jul 2019 17:52:53 +0800
+cc61aa2 - lkiven - 改版，首页，搜索 - Thu, 25 Jul 2019 18:08:15 +0800
+7c30d73 - lkiven - 准备重构 - Thu, 25 Jul 2019 09:33:03 +0800
+5e2bfa8 - lkiven - '首页新房间距加大' - Tue, 9 Jul 2019 15:04:47 +0800
+c974d2c - wuyang - 更新 'app/Models/NewHouse.php' - Tue, 9 Jul 2019 01:46:20 +0000
+06bdb50 - lkiven - .env.example. - Fri, 5 Jul 2019 16:41:13 +0800
+e5cd8eb - lkiven - 图片前缀增加.env配置 - Fri, 5 Jul 2019 16:39:56 +0800
+b3c4cc0 - lkiven - 4 - Thu, 4 Jul 2019 17:36:01 +0800
+ca988aa - lkiven - 3 - Thu, 4 Jul 2019 17:03:08 +0800
+358d66d - lkiven - 2 - Thu, 4 Jul 2019 09:11:27 +0800
+431a6ee - lkiven - 1 - Tue, 2 Jul 2019 09:48:03 +0800
+b974a6e - lkiven - 1 - Tue, 2 Jul 2019 09:07:35 +0800
+54876b7 - lkiven - Merge branch 'master' of http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main - Mon, 1 Jul 2019 18:11:18 +0800
+f0496b0 - lkiven - 1 - Mon, 1 Jul 2019 18:11:05 +0800
+a33009c - Gogs - 隐藏不用模块 - Mon, 1 Jul 2019 17:55:50 +0800
+42c1ba1 - lkiven - 友联 - Mon, 1 Jul 2019 17:36:06 +0800
+eae5df6 - lkiven - 登录 - Mon, 1 Jul 2019 09:08:05 +0800
+9cfdb11 - lkiven - 1 - Sat, 29 Jun 2019 12:15:11 +0800
+748996f - lkiven - 1 - Sat, 29 Jun 2019 11:02:04 +0800
+363602b - lkiven - 1 - Sat, 29 Jun 2019 11:00:50 +0800
+
+[local command run]2019/07/30 17:54:43 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 070c58f
+[local command result]2019/07/30 17:54:43 commit 070c58f4740c6217dcba02336cc21f101ea94d8d
+Author: lkiven <zz_lkw@163.com>
+Date:   Fri Jul 26 17:52:53 2019 +0800
+
+    基本修改完成
+
+ .idea/workspace.xml                               |  413 +++--
+ app/Http/Controllers/Home/NewDetailController.php |  147 +-
+ app/Http/Controllers/Home/UserController.php      |    6 +-
+ public/static/css/style.css                       | 1951 ++++++++++-----------
+ public/static/img/not_img.png                     |  Bin 0 -> 2879 bytes
+ resources/views/home/index/index.blade.php        |  107 +-
+ resources/views/home/newdetail/index.blade.php    |  535 +++---
+ resources/views/home/newsearch/index.blade.php    |   19 +-
+ resources/views/home/user/new_collect.blade.php   |   11 +-
+ resources/views/home/user/new_order.blade.php     |    8 +-
+ 10 files changed, 1762 insertions(+), 1435 deletions(-)
+
+[local command run]2019/07/30 17:57:26 cd repository/www.lugongzi.net.cn.v2.main.git && git fetch --all && git reset --hard origin/master && git pull
+[local command result]2019/07/30 17:57:26 Fetching origin
+HEAD is now at 070c58f 基本修改完成
+Already up to date.
+
+[local command run]2019/07/30 17:57:26 cd repository/www.lugongzi.net.cn.v2.main.git && git log -20 --pretty="%h - %an - %s - %cD"
+[local command result]2019/07/30 17:57:26 070c58f - lkiven - 基本修改完成 - Fri, 26 Jul 2019 17:52:53 +0800
+cc61aa2 - lkiven - 改版，首页，搜索 - Thu, 25 Jul 2019 18:08:15 +0800
+7c30d73 - lkiven - 准备重构 - Thu, 25 Jul 2019 09:33:03 +0800
+5e2bfa8 - lkiven - '首页新房间距加大' - Tue, 9 Jul 2019 15:04:47 +0800
+c974d2c - wuyang - 更新 'app/Models/NewHouse.php' - Tue, 9 Jul 2019 01:46:20 +0000
+06bdb50 - lkiven - .env.example. - Fri, 5 Jul 2019 16:41:13 +0800
+e5cd8eb - lkiven - 图片前缀增加.env配置 - Fri, 5 Jul 2019 16:39:56 +0800
+b3c4cc0 - lkiven - 4 - Thu, 4 Jul 2019 17:36:01 +0800
+ca988aa - lkiven - 3 - Thu, 4 Jul 2019 17:03:08 +0800
+358d66d - lkiven - 2 - Thu, 4 Jul 2019 09:11:27 +0800
+431a6ee - lkiven - 1 - Tue, 2 Jul 2019 09:48:03 +0800
+b974a6e - lkiven - 1 - Tue, 2 Jul 2019 09:07:35 +0800
+54876b7 - lkiven - Merge branch 'master' of http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main - Mon, 1 Jul 2019 18:11:18 +0800
+f0496b0 - lkiven - 1 - Mon, 1 Jul 2019 18:11:05 +0800
+a33009c - Gogs - 隐藏不用模块 - Mon, 1 Jul 2019 17:55:50 +0800
+42c1ba1 - lkiven - 友联 - Mon, 1 Jul 2019 17:36:06 +0800
+eae5df6 - lkiven - 登录 - Mon, 1 Jul 2019 09:08:05 +0800
+9cfdb11 - lkiven - 1 - Sat, 29 Jun 2019 12:15:11 +0800
+748996f - lkiven - 1 - Sat, 29 Jun 2019 11:02:04 +0800
+363602b - lkiven - 1 - Sat, 29 Jun 2019 11:00:50 +0800
+
+[local command run]2019/07/30 17:57:28 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 070c58f
+[local command result]2019/07/30 17:57:28 commit 070c58f4740c6217dcba02336cc21f101ea94d8d
+Author: lkiven <zz_lkw@163.com>
+Date:   Fri Jul 26 17:52:53 2019 +0800
+
+    基本修改完成
+
+ .idea/workspace.xml                               |  413 +++--
+ app/Http/Controllers/Home/NewDetailController.php |  147 +-
+ app/Http/Controllers/Home/UserController.php      |    6 +-
+ public/static/css/style.css                       | 1951 ++++++++++-----------
+ public/static/img/not_img.png                     |  Bin 0 -> 2879 bytes
+ resources/views/home/index/index.blade.php        |  107 +-
+ resources/views/home/newdetail/index.blade.php    |  535 +++---
+ resources/views/home/newsearch/index.blade.php    |   19 +-
+ resources/views/home/user/new_collect.blade.php   |   11 +-
+ resources/views/home/user/new_order.blade.php     |    8 +-
+ 10 files changed, 1762 insertions(+), 1435 deletions(-)
+
+[local command run]2019/07/30 17:57:37 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 cc61aa2
+[local command result]2019/07/30 17:57:38 commit cc61aa20a3221343bae7cb39e9184b7ce9c9af4e
+Author: lkiven <zz_lkw@163.com>
+Date:   Thu Jul 25 18:08:15 2019 +0800
+
+    改版，首页，搜索
+
+ .idea/workspace.xml                               |  607 ++++---
+ app/Common/Help/helps.php                         |   41 +
+ app/Http/Controllers/Home/BaseController.php      |   14 +
+ app/Http/Controllers/Home/IndexController.php     |   46 +
+ app/Http/Controllers/Home/LoginController.php     |  100 ++
+ app/Http/Controllers/Home/NewDetailController.php |  205 +++
+ app/Http/Controllers/Home/NewSearchController.php |  365 ++++
+ app/Http/Controllers/Home/TestController.php      |  366 ++++
+ app/Http/Controllers/Home/UserController.php      |   78 +
+ app/Models/GroupHouse.php                         |    5 +-
+ app/Models/GroupHouseImg.php                      |    1 +
+ app/Models/NewHouse.php                           |   10 +-
+ app/Models/UsedHouse.php                          |   12 +
+ app/Models/UsedHouseImage.php                     |   26 +
+ public/static.zip                                 |  Bin 0 -> 5662049 bytes
+ public/static/css - 副本/common.css             |    1 -
+ public/static/css - 副本/detail.min.css         |    9 -
+ public/static/css - 副本/style.css              | 1531 ----------------
+ public/static/css - 副本/swiper.css             |   15 -
+ public/static/css - 副本/video-js.min.css       |    1 -
+ public/static/css - 副本/zdialog.css            |  226 ---
+ public/static/css/common.css                      |    2 +-
+ public/static/css/style.css                       | 1996 ++++++++++++---------
+ public/static/images/icon.png                     |  Bin 0 -> 19906 bytes
+ public/static/images/m_green.png                  |  Bin 0 -> 1233 bytes
+ public/static/images/m_red.png                    |  Bin 0 -> 1237 bytes
+ public/static/img/1.png                           |  Bin 1904 -> 10529 bytes
+ public/static/img/2.png                           |  Bin 3052 -> 10069 bytes
+ public/static/img/3.png                           |  Bin 3315 -> 8814 bytes
+ public/static/img/4.png                           |  Bin 0 -> 9845 bytes
+ public/static/img/5.png                           |  Bin 0 -> 9475 bytes
+ public/static/img/addres.png                      |  Bin 0 -> 4609 bytes
+ public/static/img/address.png                     |  Bin 4682 -> 3953 bytes
+ public/static/img/bao.png                         |  Bin 880 -> 1925 bytes
+ public/static/img/baotuan.png                     |  Bin 0 -> 4810 bytes
+ public/static/img/collection.png                  |  Bin 4086 -> 3747 bytes
+ public/static/img/def-video-cover.png             |  Bin 22520 -> 0 bytes
+ public/static/img/demo.png                        |  Bin 1590508 -> 99197 bytes
+ public/static/img/erweima.png                     |  Bin 2489 -> 2528 bytes
+ public/static/img/huxin.png                       |  Bin 0 -> 1817 bytes
+ public/static/img/index.png                       |  Bin 2206298 -> 1544094 bytes
+ public/static/img/jisuan.png                      |  Bin 0 -> 2572 bytes
+ public/static/img/logo2.png                       |  Bin 0 -> 34627 bytes
+ public/static/img/phone.png                       |  Bin 3730 -> 6096 bytes
+ public/static/img/q.png                           |  Bin 0 -> 455611 bytes
+ public/static/img/sige.png                        |  Bin 0 -> 629 bytes
+ public/static/layui.zip                           |  Bin 589339 -> 0 bytes
+ resources/views/home/index/index.blade.php        |  423 +++++
+ resources/views/home/layout/footer.blade.php      |   36 +
+ resources/views/home/layout/header.blade.php      |   13 +
+ resources/views/home/layout/login.blade.php       |  127 ++
+ resources/views/home/layout/nav.blade.php         |   32 +
+ resources/views/home/layout/page.blade.php        |   74 +
+ resources/views/home/newdetail/index.blade.php    |  751 ++++++++
+ resources/views/home/newsearch/index.blade.php    |  416 +++++
+ resources/views/home/test/city.blade.php          |  113 ++
+ resources/views/home/test/index.blade.php         |  294 +++
+ resources/views/home/user/group.blade.php         |    1 +
+ resources/views/home/user/new_collect.blade.php   |  190 ++
+ resources/views/home/user/new_order.blade.php     |  190 ++
+ routes/web.php                                    |  120 +-
+ 61 files changed, 5463 insertions(+), 2974 deletions(-)
+
+[local command run]2019/07/30 17:58:58 cd repository/www.lugongzi.net.cn.v2.main.git && git fetch --all && git reset --hard origin/master && git pull
+[local command result]2019/07/30 17:58:58 Fetching origin
+HEAD is now at 070c58f 基本修改完成
+Already up to date.
+
+[local command run]2019/07/30 17:58:58 cd repository/www.lugongzi.net.cn.v2.main.git && git log -20 --pretty="%h - %an - %s - %cD"
+[local command result]2019/07/30 17:58:58 070c58f - lkiven - 基本修改完成 - Fri, 26 Jul 2019 17:52:53 +0800
+cc61aa2 - lkiven - 改版，首页，搜索 - Thu, 25 Jul 2019 18:08:15 +0800
+7c30d73 - lkiven - 准备重构 - Thu, 25 Jul 2019 09:33:03 +0800
+5e2bfa8 - lkiven - '首页新房间距加大' - Tue, 9 Jul 2019 15:04:47 +0800
+c974d2c - wuyang - 更新 'app/Models/NewHouse.php' - Tue, 9 Jul 2019 01:46:20 +0000
+06bdb50 - lkiven - .env.example. - Fri, 5 Jul 2019 16:41:13 +0800
+e5cd8eb - lkiven - 图片前缀增加.env配置 - Fri, 5 Jul 2019 16:39:56 +0800
+b3c4cc0 - lkiven - 4 - Thu, 4 Jul 2019 17:36:01 +0800
+ca988aa - lkiven - 3 - Thu, 4 Jul 2019 17:03:08 +0800
+358d66d - lkiven - 2 - Thu, 4 Jul 2019 09:11:27 +0800
+431a6ee - lkiven - 1 - Tue, 2 Jul 2019 09:48:03 +0800
+b974a6e - lkiven - 1 - Tue, 2 Jul 2019 09:07:35 +0800
+54876b7 - lkiven - Merge branch 'master' of http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main - Mon, 1 Jul 2019 18:11:18 +0800
+f0496b0 - lkiven - 1 - Mon, 1 Jul 2019 18:11:05 +0800
+a33009c - Gogs - 隐藏不用模块 - Mon, 1 Jul 2019 17:55:50 +0800
+42c1ba1 - lkiven - 友联 - Mon, 1 Jul 2019 17:36:06 +0800
+eae5df6 - lkiven - 登录 - Mon, 1 Jul 2019 09:08:05 +0800
+9cfdb11 - lkiven - 1 - Sat, 29 Jun 2019 12:15:11 +0800
+748996f - lkiven - 1 - Sat, 29 Jun 2019 11:02:04 +0800
+363602b - lkiven - 1 - Sat, 29 Jun 2019 11:00:50 +0800
+
+[local command run]2019/07/30 17:59:00 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 070c58f
+[local command result]2019/07/30 17:59:00 commit 070c58f4740c6217dcba02336cc21f101ea94d8d
+Author: lkiven <zz_lkw@163.com>
+Date:   Fri Jul 26 17:52:53 2019 +0800
+
+    基本修改完成
+
+ .idea/workspace.xml                               |  413 +++--
+ app/Http/Controllers/Home/NewDetailController.php |  147 +-
+ app/Http/Controllers/Home/UserController.php      |    6 +-
+ public/static/css/style.css                       | 1951 ++++++++++-----------
+ public/static/img/not_img.png                     |  Bin 0 -> 2879 bytes
+ resources/views/home/index/index.blade.php        |  107 +-
+ resources/views/home/newdetail/index.blade.php    |  535 +++---
+ resources/views/home/newsearch/index.blade.php    |   19 +-
+ resources/views/home/user/new_collect.blade.php   |   11 +-
+ resources/views/home/user/new_order.blade.php     |    8 +-
+ 10 files changed, 1762 insertions(+), 1435 deletions(-)
+
+[local command run]2019/07/30 17:59:18 cd repository/www.lugongzi.net.cn.v2.main.git && git fetch --all && git reset --hard origin/master && git pull
+[local command result]2019/07/30 17:59:18 Fetching origin
+HEAD is now at 070c58f 基本修改完成
+Already up to date.
+
+[local command run]2019/07/30 17:59:18 cd repository/www.lugongzi.net.cn.v2.main.git && git log -20 --pretty="%h - %an - %s - %cD"
+[local command result]2019/07/30 17:59:18 070c58f - lkiven - 基本修改完成 - Fri, 26 Jul 2019 17:52:53 +0800
+cc61aa2 - lkiven - 改版，首页，搜索 - Thu, 25 Jul 2019 18:08:15 +0800
+7c30d73 - lkiven - 准备重构 - Thu, 25 Jul 2019 09:33:03 +0800
+5e2bfa8 - lkiven - '首页新房间距加大' - Tue, 9 Jul 2019 15:04:47 +0800
+c974d2c - wuyang - 更新 'app/Models/NewHouse.php' - Tue, 9 Jul 2019 01:46:20 +0000
+06bdb50 - lkiven - .env.example. - Fri, 5 Jul 2019 16:41:13 +0800
+e5cd8eb - lkiven - 图片前缀增加.env配置 - Fri, 5 Jul 2019 16:39:56 +0800
+b3c4cc0 - lkiven - 4 - Thu, 4 Jul 2019 17:36:01 +0800
+ca988aa - lkiven - 3 - Thu, 4 Jul 2019 17:03:08 +0800
+358d66d - lkiven - 2 - Thu, 4 Jul 2019 09:11:27 +0800
+431a6ee - lkiven - 1 - Tue, 2 Jul 2019 09:48:03 +0800
+b974a6e - lkiven - 1 - Tue, 2 Jul 2019 09:07:35 +0800
+54876b7 - lkiven - Merge branch 'master' of http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main - Mon, 1 Jul 2019 18:11:18 +0800
+f0496b0 - lkiven - 1 - Mon, 1 Jul 2019 18:11:05 +0800
+a33009c - Gogs - 隐藏不用模块 - Mon, 1 Jul 2019 17:55:50 +0800
+42c1ba1 - lkiven - 友联 - Mon, 1 Jul 2019 17:36:06 +0800
+eae5df6 - lkiven - 登录 - Mon, 1 Jul 2019 09:08:05 +0800
+9cfdb11 - lkiven - 1 - Sat, 29 Jun 2019 12:15:11 +0800
+748996f - lkiven - 1 - Sat, 29 Jun 2019 11:02:04 +0800
+363602b - lkiven - 1 - Sat, 29 Jun 2019 11:00:50 +0800
+
+[local command run]2019/07/30 17:59:20 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 cc61aa2
+[local command result]2019/07/30 17:59:20 commit cc61aa20a3221343bae7cb39e9184b7ce9c9af4e
+Author: lkiven <zz_lkw@163.com>
+Date:   Thu Jul 25 18:08:15 2019 +0800
+
+    改版，首页，搜索
+
+ .idea/workspace.xml                               |  607 ++++---
+ app/Common/Help/helps.php                         |   41 +
+ app/Http/Controllers/Home/BaseController.php      |   14 +
+ app/Http/Controllers/Home/IndexController.php     |   46 +
+ app/Http/Controllers/Home/LoginController.php     |  100 ++
+ app/Http/Controllers/Home/NewDetailController.php |  205 +++
+ app/Http/Controllers/Home/NewSearchController.php |  365 ++++
+ app/Http/Controllers/Home/TestController.php      |  366 ++++
+ app/Http/Controllers/Home/UserController.php      |   78 +
+ app/Models/GroupHouse.php                         |    5 +-
+ app/Models/GroupHouseImg.php                      |    1 +
+ app/Models/NewHouse.php                           |   10 +-
+ app/Models/UsedHouse.php                          |   12 +
+ app/Models/UsedHouseImage.php                     |   26 +
+ public/static.zip                                 |  Bin 0 -> 5662049 bytes
+ public/static/css - 副本/common.css             |    1 -
+ public/static/css - 副本/detail.min.css         |    9 -
+ public/static/css - 副本/style.css              | 1531 ----------------
+ public/static/css - 副本/swiper.css             |   15 -
+ public/static/css - 副本/video-js.min.css       |    1 -
+ public/static/css - 副本/zdialog.css            |  226 ---
+ public/static/css/common.css                      |    2 +-
+ public/static/css/style.css                       | 1996 ++++++++++++---------
+ public/static/images/icon.png                     |  Bin 0 -> 19906 bytes
+ public/static/images/m_green.png                  |  Bin 0 -> 1233 bytes
+ public/static/images/m_red.png                    |  Bin 0 -> 1237 bytes
+ public/static/img/1.png                           |  Bin 1904 -> 10529 bytes
+ public/static/img/2.png                           |  Bin 3052 -> 10069 bytes
+ public/static/img/3.png                           |  Bin 3315 -> 8814 bytes
+ public/static/img/4.png                           |  Bin 0 -> 9845 bytes
+ public/static/img/5.png                           |  Bin 0 -> 9475 bytes
+ public/static/img/addres.png                      |  Bin 0 -> 4609 bytes
+ public/static/img/address.png                     |  Bin 4682 -> 3953 bytes
+ public/static/img/bao.png                         |  Bin 880 -> 1925 bytes
+ public/static/img/baotuan.png                     |  Bin 0 -> 4810 bytes
+ public/static/img/collection.png                  |  Bin 4086 -> 3747 bytes
+ public/static/img/def-video-cover.png             |  Bin 22520 -> 0 bytes
+ public/static/img/demo.png                        |  Bin 1590508 -> 99197 bytes
+ public/static/img/erweima.png                     |  Bin 2489 -> 2528 bytes
+ public/static/img/huxin.png                       |  Bin 0 -> 1817 bytes
+ public/static/img/index.png                       |  Bin 2206298 -> 1544094 bytes
+ public/static/img/jisuan.png                      |  Bin 0 -> 2572 bytes
+ public/static/img/logo2.png                       |  Bin 0 -> 34627 bytes
+ public/static/img/phone.png                       |  Bin 3730 -> 6096 bytes
+ public/static/img/q.png                           |  Bin 0 -> 455611 bytes
+ public/static/img/sige.png                        |  Bin 0 -> 629 bytes
+ public/static/layui.zip                           |  Bin 589339 -> 0 bytes
+ resources/views/home/index/index.blade.php        |  423 +++++
+ resources/views/home/layout/footer.blade.php      |   36 +
+ resources/views/home/layout/header.blade.php      |   13 +
+ resources/views/home/layout/login.blade.php       |  127 ++
+ resources/views/home/layout/nav.blade.php         |   32 +
+ resources/views/home/layout/page.blade.php        |   74 +
+ resources/views/home/newdetail/index.blade.php    |  751 ++++++++
+ resources/views/home/newsearch/index.blade.php    |  416 +++++
+ resources/views/home/test/city.blade.php          |  113 ++
+ resources/views/home/test/index.blade.php         |  294 +++
+ resources/views/home/user/group.blade.php         |    1 +
+ resources/views/home/user/new_collect.blade.php   |  190 ++
+ resources/views/home/user/new_order.blade.php     |  190 ++
+ routes/web.php                                    |  120 +-
+ 61 files changed, 5463 insertions(+), 2974 deletions(-)
+
+[local command run]2019/07/30 17:59:47 cd repository/www.lugongzi.net.cn.v2.main.git && git fetch --all && git reset --hard origin/master && git pull
+[local command result]2019/07/30 17:59:47 Fetching origin
+HEAD is now at 070c58f 基本修改完成
+Already up to date.
+
+[local command run]2019/07/30 17:59:47 cd repository/www.lugongzi.net.cn.v2.main.git && git log -20 --pretty="%h - %an - %s - %cD"
+[local command result]2019/07/30 17:59:47 070c58f - lkiven - 基本修改完成 - Fri, 26 Jul 2019 17:52:53 +0800
+cc61aa2 - lkiven - 改版，首页，搜索 - Thu, 25 Jul 2019 18:08:15 +0800
+7c30d73 - lkiven - 准备重构 - Thu, 25 Jul 2019 09:33:03 +0800
+5e2bfa8 - lkiven - '首页新房间距加大' - Tue, 9 Jul 2019 15:04:47 +0800
+c974d2c - wuyang - 更新 'app/Models/NewHouse.php' - Tue, 9 Jul 2019 01:46:20 +0000
+06bdb50 - lkiven - .env.example. - Fri, 5 Jul 2019 16:41:13 +0800
+e5cd8eb - lkiven - 图片前缀增加.env配置 - Fri, 5 Jul 2019 16:39:56 +0800
+b3c4cc0 - lkiven - 4 - Thu, 4 Jul 2019 17:36:01 +0800
+ca988aa - lkiven - 3 - Thu, 4 Jul 2019 17:03:08 +0800
+358d66d - lkiven - 2 - Thu, 4 Jul 2019 09:11:27 +0800
+431a6ee - lkiven - 1 - Tue, 2 Jul 2019 09:48:03 +0800
+b974a6e - lkiven - 1 - Tue, 2 Jul 2019 09:07:35 +0800
+54876b7 - lkiven - Merge branch 'master' of http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main - Mon, 1 Jul 2019 18:11:18 +0800
+f0496b0 - lkiven - 1 - Mon, 1 Jul 2019 18:11:05 +0800
+a33009c - Gogs - 隐藏不用模块 - Mon, 1 Jul 2019 17:55:50 +0800
+42c1ba1 - lkiven - 友联 - Mon, 1 Jul 2019 17:36:06 +0800
+eae5df6 - lkiven - 登录 - Mon, 1 Jul 2019 09:08:05 +0800
+9cfdb11 - lkiven - 1 - Sat, 29 Jun 2019 12:15:11 +0800
+748996f - lkiven - 1 - Sat, 29 Jun 2019 11:02:04 +0800
+363602b - lkiven - 1 - Sat, 29 Jun 2019 11:00:50 +0800
+
+[local command run]2019/07/30 17:59:50 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 cc61aa2
+[local command result]2019/07/30 17:59:50 commit cc61aa20a3221343bae7cb39e9184b7ce9c9af4e
+Author: lkiven <zz_lkw@163.com>
+Date:   Thu Jul 25 18:08:15 2019 +0800
+
+    改版，首页，搜索
+
+ .idea/workspace.xml                               |  607 ++++---
+ app/Common/Help/helps.php                         |   41 +
+ app/Http/Controllers/Home/BaseController.php      |   14 +
+ app/Http/Controllers/Home/IndexController.php     |   46 +
+ app/Http/Controllers/Home/LoginController.php     |  100 ++
+ app/Http/Controllers/Home/NewDetailController.php |  205 +++
+ app/Http/Controllers/Home/NewSearchController.php |  365 ++++
+ app/Http/Controllers/Home/TestController.php      |  366 ++++
+ app/Http/Controllers/Home/UserController.php      |   78 +
+ app/Models/GroupHouse.php                         |    5 +-
+ app/Models/GroupHouseImg.php                      |    1 +
+ app/Models/NewHouse.php                           |   10 +-
+ app/Models/UsedHouse.php                          |   12 +
+ app/Models/UsedHouseImage.php                     |   26 +
+ public/static.zip                                 |  Bin 0 -> 5662049 bytes
+ public/static/css - 副本/common.css             |    1 -
+ public/static/css - 副本/detail.min.css         |    9 -
+ public/static/css - 副本/style.css              | 1531 ----------------
+ public/static/css - 副本/swiper.css             |   15 -
+ public/static/css - 副本/video-js.min.css       |    1 -
+ public/static/css - 副本/zdialog.css            |  226 ---
+ public/static/css/common.css                      |    2 +-
+ public/static/css/style.css                       | 1996 ++++++++++++---------
+ public/static/images/icon.png                     |  Bin 0 -> 19906 bytes
+ public/static/images/m_green.png                  |  Bin 0 -> 1233 bytes
+ public/static/images/m_red.png                    |  Bin 0 -> 1237 bytes
+ public/static/img/1.png                           |  Bin 1904 -> 10529 bytes
+ public/static/img/2.png                           |  Bin 3052 -> 10069 bytes
+ public/static/img/3.png                           |  Bin 3315 -> 8814 bytes
+ public/static/img/4.png                           |  Bin 0 -> 9845 bytes
+ public/static/img/5.png                           |  Bin 0 -> 9475 bytes
+ public/static/img/addres.png                      |  Bin 0 -> 4609 bytes
+ public/static/img/address.png                     |  Bin 4682 -> 3953 bytes
+ public/static/img/bao.png                         |  Bin 880 -> 1925 bytes
+ public/static/img/baotuan.png                     |  Bin 0 -> 4810 bytes
+ public/static/img/collection.png                  |  Bin 4086 -> 3747 bytes
+ public/static/img/def-video-cover.png             |  Bin 22520 -> 0 bytes
+ public/static/img/demo.png                        |  Bin 1590508 -> 99197 bytes
+ public/static/img/erweima.png                     |  Bin 2489 -> 2528 bytes
+ public/static/img/huxin.png                       |  Bin 0 -> 1817 bytes
+ public/static/img/index.png                       |  Bin 2206298 -> 1544094 bytes
+ public/static/img/jisuan.png                      |  Bin 0 -> 2572 bytes
+ public/static/img/logo2.png                       |  Bin 0 -> 34627 bytes
+ public/static/img/phone.png                       |  Bin 3730 -> 6096 bytes
+ public/static/img/q.png                           |  Bin 0 -> 455611 bytes
+ public/static/img/sige.png                        |  Bin 0 -> 629 bytes
+ public/static/layui.zip                           |  Bin 589339 -> 0 bytes
+ resources/views/home/index/index.blade.php        |  423 +++++
+ resources/views/home/layout/footer.blade.php      |   36 +
+ resources/views/home/layout/header.blade.php      |   13 +
+ resources/views/home/layout/login.blade.php       |  127 ++
+ resources/views/home/layout/nav.blade.php         |   32 +
+ resources/views/home/layout/page.blade.php        |   74 +
+ resources/views/home/newdetail/index.blade.php    |  751 ++++++++
+ resources/views/home/newsearch/index.blade.php    |  416 +++++
+ resources/views/home/test/city.blade.php          |  113 ++
+ resources/views/home/test/index.blade.php         |  294 +++
+ resources/views/home/user/group.blade.php         |    1 +
+ resources/views/home/user/new_collect.blade.php   |  190 ++
+ resources/views/home/user/new_order.blade.php     |  190 ++
+ routes/web.php                                    |  120 +-
+ 61 files changed, 5463 insertions(+), 2974 deletions(-)
+
+[local command run]2019/07/30 18:00:22 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 070c58f
+[local command result]2019/07/30 18:00:22 commit 070c58f4740c6217dcba02336cc21f101ea94d8d
+Author: lkiven <zz_lkw@163.com>
+Date:   Fri Jul 26 17:52:53 2019 +0800
+
+    基本修改完成
+
+ .idea/workspace.xml                               |  413 +++--
+ app/Http/Controllers/Home/NewDetailController.php |  147 +-
+ app/Http/Controllers/Home/UserController.php      |    6 +-
+ public/static/css/style.css                       | 1951 ++++++++++-----------
+ public/static/img/not_img.png                     |  Bin 0 -> 2879 bytes
+ resources/views/home/index/index.blade.php        |  107 +-
+ resources/views/home/newdetail/index.blade.php    |  535 +++---
+ resources/views/home/newsearch/index.blade.php    |   19 +-
+ resources/views/home/user/new_collect.blade.php   |   11 +-
+ resources/views/home/user/new_order.blade.php     |    8 +-
+ 10 files changed, 1762 insertions(+), 1435 deletions(-)
+
+[local command run]2019/07/30 18:00:24 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 c974d2c
+[local command result]2019/07/30 18:00:24 commit c974d2c322a8ef0635118154ef1b6402b9a6a254
+Author: wuyang <1550520500@qq.com>
+Date:   Tue Jul 9 01:46:20 2019 +0000
+
+    更新 'app/Models/NewHouse.php'
+
+ app/Models/NewHouse.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+[local command run]2019/07/30 18:00:26 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 7c30d73
+[local command result]2019/07/30 18:00:26 commit 7c30d730a79fa63c5e6ae079889ec416cb869651
+Author: lkiven <zz_lkw@163.com>
+Date:   Thu Jul 25 09:33:03 2019 +0800
+
+    准备重构
+
+ .idea/workspace.xml | 204 ++++++++++++++++++++++++++++------------------------
+ 1 file changed, 111 insertions(+), 93 deletions(-)
+
+[local command run]2019/07/30 18:00:28 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 5e2bfa8
+[local command result]2019/07/30 18:00:28 commit 5e2bfa8056c8fb76ad84ffd045fad20341497405
+Author: lkiven <zz_lkw@163.com>
+Date:   Tue Jul 9 15:04:47 2019 +0800
+
+    '首页新房间距加大'
+
+ .idea/workspace.xml                         | 276 +++++++++++++---------------
+ resources/views/index/index/index.blade.php |   2 +-
+ 2 files changed, 133 insertions(+), 145 deletions(-)
+
+[local command run]2019/07/30 18:00:31 cd repository/www.lugongzi.net.cn.v2.main.git && git log --stat -1 070c58f
+[local command result]2019/07/30 18:00:31 commit 070c58f4740c6217dcba02336cc21f101ea94d8d
+Author: lkiven <zz_lkw@163.com>
+Date:   Fri Jul 26 17:52:53 2019 +0800
+
+    基本修改完成
+
+ .idea/workspace.xml                               |  413 +++--
+ app/Http/Controllers/Home/NewDetailController.php |  147 +-
+ app/Http/Controllers/Home/UserController.php      |    6 +-
+ public/static/css/style.css                       | 1951 ++++++++++-----------
+ public/static/img/not_img.png                     |  Bin 0 -> 2879 bytes
+ resources/views/home/index/index.blade.php        |  107 +-
+ resources/views/home/newdetail/index.blade.php    |  535 +++---
+ resources/views/home/newsearch/index.blade.php    |   19 +-
+ resources/views/home/user/new_collect.blade.php   |   11 +-
+ resources/views/home/user/new_order.blade.php     |    8 +-
+ 10 files changed, 1762 insertions(+), 1435 deletions(-)
+

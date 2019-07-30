@@ -1,7 +1,6 @@
 package api_v1
 
 import (
-	"log"
 	"strings"
 	"time"
 
@@ -190,13 +189,11 @@ func GetVersions(ctx iris.Context) {
 	commitList := []Commit{}
 	for _, version := range versions {
 		if len(version) > 0 {
-			log.Println(version)
 			commit := Commit{Key: version[0:7], Value: version}
 			commitList = append(commitList, commit)
 		}
 
 	}
-	log.Printf("%#v", commitList)
 	ctx.Write(model.NewResult(1, 0, "成功", commitList))
 
 }
@@ -263,9 +260,9 @@ func TaskDeploy(ctx iris.Context) {
 			// 开始变量替换
 			action := strings.Replace(step.Action, "__version__", task.Version, -1)
 
-			mlog.Flog("publish.log", "[publish task run]", action)
+			mlog.Flog("publish", "[publish task run]", action)
 			output, err := cmd.RunRemote(conn, action)
-			mlog.Flog("publish.log", "[publish task result]", output)
+			mlog.Flog("publish", "[publish task result]", output)
 
 			if err != nil {
 				ctx.Write(model.NewResult(0, 0, output, []byte("")))

@@ -3,6 +3,7 @@ package mlog
 import (
 	"log"
 	"os"
+	"time"
 )
 
 var Mlog *log.Logger
@@ -13,8 +14,9 @@ func init() {
 }
 
 func Flog(fileName string, title string, content string) {
-
-	logFile, err := os.OpenFile("logs/"+fileName, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
+	now := time.Now().Format("2006-01-02")
+	os.Mkdir("logs/"+fileName, 0766)
+	logFile, err := os.OpenFile("logs/"+fileName+"/"+now+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
 	defer logFile.Close()
 	if err != nil {
 		log.Fatalln(err)

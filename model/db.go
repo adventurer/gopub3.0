@@ -1,6 +1,10 @@
 package model
 
 import (
+	"fmt"
+
+	"gopub3.0/config"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -9,11 +13,19 @@ var DB *gorm.DB
 
 func init() {
 	var err error
-	DB, err = gorm.Open("mysql", "root:112215334@tcp(192.168.1.202:3306)/gopub_v3?charset=utf8&parseTime=True&loc=Local")
+	dbURI := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/gopub_v3?charset=utf8&parseTime=True&loc=Local",
+		config.Variable.Database.User,
+		config.Variable.Database.Password,
+		config.Variable.Database.Host,
+		config.Variable.Database.Port,
+	)
+
+	DB, err = gorm.Open("mysql", dbURI)
 	if err != nil {
 		panic(err.Error())
 	}
-	DB.LogMode(false)
+	DB.LogMode(true)
 
 	DB.AutoMigrate(&User{}, &Machine{}, Service{}, Project{}, Task{}, DeployStep{}, Cron{})
 	initAdmin()

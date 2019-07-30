@@ -29,7 +29,7 @@ func init() {
 					machine := model.Machine{}
 					model.DB.Where("name = ?", item.Machine).First(&machine)
 					command := item.Cmd
-					logName := item.Name + ".log"
+					logName := item.Name
 					if item.Status == 1 {
 						Cron.AddFunc(item.Schedule, func() {
 							defer recoverName()
@@ -92,6 +92,7 @@ func Restart() {
 
 func recoverName() {
 	if r := recover(); r != nil {
-		fmt.Println("cron recovered from", r)
+		fmt.Println("计划任务崩溃，延迟1秒重启", r)
+		time.Sleep(1 * time.Second)
 	}
 }

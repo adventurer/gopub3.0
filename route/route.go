@@ -26,6 +26,7 @@ func Init(app *iris.Application) {
 
 		v1.Post("user/remove", api_v1.UserRemove)
 		v1.Post("user/repass", api_v1.UserResetPass)
+		v1.Post("user/reset", api_v1.UserResetByAdmin)
 
 		v1.Get("welcome", api_v1.Welcome)
 		v1.Post("machine/add", api_v1.MachineAdd)

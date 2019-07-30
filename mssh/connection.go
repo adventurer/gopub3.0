@@ -13,6 +13,7 @@ var clientPool = make(map[string]*ssh.Client, 10)
 
 func init() {
 	go func() {
+		time.Sleep(1 * time.Second)
 		for {
 			for k, client := range clientPool {
 				_, _, err := client.SendRequest("ping", true, []byte("ping"))

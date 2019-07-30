@@ -6,7 +6,6 @@ import (
 	"github.com/kataras/iris"
 
 	"gopub3.0/cron"
-	_ "gopub3.0/cron"
 	"gopub3.0/mssh"
 	"gopub3.0/route"
 )

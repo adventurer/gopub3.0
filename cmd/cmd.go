@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"golang.org/x/crypto/ssh"
+	"gopub3.0/mlog"
 
 	"io/ioutil"
 	"os/exec"
@@ -17,6 +18,8 @@ func RunLocal(command string) (output string, err error) {
 	stdin, _ := cmd.StdinPipe()
 	stdout, _ := cmd.StdoutPipe()
 	stderr, _ := cmd.StderrPipe()
+
+	mlog.Flog("localCommand", "[local command run]", command)
 
 	if err = cmd.Start(); err != nil {
 		fmt.Println("Execute failed when Start:" + err.Error())
@@ -35,6 +38,7 @@ func RunLocal(command string) (output string, err error) {
 		fmt.Println("Execute failed when Wait:" + err.Error() + ":{" + strings.TrimSpace(string(errBytes)) + "}")
 		return "", err
 	}
+	mlog.Flog("localCommand", "[local command result]", string(outBytes))
 
 	// fmt.Println("Execute finished:" + string(outBytes))
 	return string(outBytes), nil

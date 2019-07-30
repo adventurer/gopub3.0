@@ -1,0 +1,56 @@
+[publish task run]2019/07/30 16:20:28 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:20:28 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:20:39 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:20:39 Fetching origin
+
+[publish task run]2019/07/30 16:20:39 cd /home/wwwdoc/lugongzi_jianti_1/ && git reset --hard 5e2bfa8
+[publish task result]2019/07/30 16:20:39 HEAD is now at 5e2bfa8 '首页新房间距加大'
+
+[publish task run]2019/07/30 16:45:22 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:45:22 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:45:26 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:45:26 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:46:15 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:46:15 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:46:20 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:46:20 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:46:25 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:46:25 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:46:28 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:46:28 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:46:31 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:46:31 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:46:34 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:46:34 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:46:37 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:46:37 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:46:41 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:46:41 Process exited with status 1:fatal: unable to access 'http://127.0.0.1:3000/wuyang/www.lugongzi.net.cn.v2.main.git/': Failed to connect to 127.0.0.1 port 3000: Connection refused
+error: Could not fetch origin
+
+[publish task run]2019/07/30 16:46:57 cd /home/wwwdoc/lugongzi_jianti_1/ && git fetch --all
+[publish task result]2019/07/30 16:46:57 Fetching origin
+
+[publish task run]2019/07/30 16:46:57 cd /home/wwwdoc/lugongzi_jianti_1/ && git reset --hard 5e2bfa8
+[publish task result]2019/07/30 16:46:57 HEAD is now at 5e2bfa8 '首页新房间距加大'
+

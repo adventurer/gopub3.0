@@ -82,6 +82,22 @@ func UserRemove(ctx iris.Context) {
 	ctx.Write(model.NewResult(1, 0, "成功", []byte("")))
 }
 
+func UserResetByAdmin(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), []byte("")))
+		return
+	}
+	user := model.User{ID: id}
+	model.DB.First(&user)
+	if user.Email == "" {
+		ctx.Write(model.NewResult(0, 0, "未找到此用户", []byte("")))
+	}
+	user.Password = "w123123"
+	model.DB.Save(&user)
+	ctx.Write(model.NewResult(1, 0, "已恢复该用户默认密码", []byte("")))
+}
+
 func UserResetPass(ctx iris.Context) {
 	pass := ctx.PostValue("pass")
 	passwordHash := ctx.GetHeader("token")

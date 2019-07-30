@@ -20,6 +20,8 @@ func GetBranchs(directory string) (result []string) {
 }
 
 func GetVersions(directory string) (result []string, err error) {
+	cmd.RunLocal("cd " + directory + " && " + "git fetch --all && git reset --hard origin/master && git pull")
+
 	output, err := cmd.RunLocal("cd " + directory + " && " + "git log -20 --pretty=\"%h - %an - %s - %cD\"")
 	if err != nil {
 		return
