@@ -121,7 +121,7 @@ func TaskInfo(ctx iris.Context) {
 
 func TaskList(ctx iris.Context) {
 	task := []model.Task{}
-	model.DB.Find(&task).Limit(15)
+	model.DB.Order("id desc").Find(&task).Limit(15)
 	ctx.Write(model.NewResult(1, 0, "成功", task))
 }
 
@@ -158,7 +158,7 @@ func TaskRemove(ctx iris.Context) {
 	}
 	task := model.Task{}
 	model.DB.Where("id = ?", TaskID).First(&task)
-	if task.Name == "" {
+	if task.UserName == "" {
 		ctx.Write(model.NewResult(0, 0, "未找到上线单", []byte("")))
 		return
 	}

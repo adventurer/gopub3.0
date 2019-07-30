@@ -55,3 +55,29 @@ func ServiceRemove(ctx iris.Context) {
 	ctx.Write(model.NewResult(1, 0, "成功", ""))
 
 }
+
+func ServiceOn(ctx iris.Context) {
+	name := ctx.PostValue("name")
+	service := model.Service{}
+	model.DB.Where("name = ?", name).First(&service)
+	if service.ID <= 0 {
+		ctx.Write(model.NewResult(0, 0, "未找到任务", ""))
+		return
+	}
+	service.Auto = 1
+	model.DB.Save(&service)
+	ctx.Write(model.NewResult(1, 0, "成功开启", ""))
+}
+
+func ServiceOff(ctx iris.Context) {
+	name := ctx.PostValue("name")
+	service := model.Service{}
+	model.DB.Where("name = ?", name).First(&service)
+	if service.ID <= 0 {
+		ctx.Write(model.NewResult(0, 0, "未找到任务", ""))
+		return
+	}
+	service.Auto = 0
+	model.DB.Save(&service)
+	ctx.Write(model.NewResult(1, 0, "成功关闭", ""))
+}

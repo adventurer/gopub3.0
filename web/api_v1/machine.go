@@ -1,7 +1,6 @@
 package api_v1
 
 import (
-	"log"
 	"time"
 
 	"github.com/kataras/iris"
@@ -28,7 +27,6 @@ func MachineList(ctx iris.Context) {
 
 func MatchineTest(ctx iris.Context) {
 	id, err := ctx.PostValueInt("id")
-	log.Println(id)
 	if err != nil {
 		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
 		return

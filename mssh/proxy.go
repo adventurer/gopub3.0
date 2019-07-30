@@ -104,6 +104,7 @@ func proxyStart(hostInfo ProxyConn) {
 	if err != nil {
 		mlog.Mlog.Println("listen err:", err.Error())
 		cpoll[hostInfo.Name].sshClient.Close()
+		cpoll[hostInfo.Name] = clientPoll{sshClient: client, status: false}
 		return
 	}
 

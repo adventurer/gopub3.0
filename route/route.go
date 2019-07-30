@@ -22,6 +22,8 @@ func Init(app *iris.Application) {
 		v1.Use(middwareAuth)
 		v1.Get("user/list", api_v1.UserList)
 		v1.Post("user/add", api_v1.UserAdd)
+		v1.Post("user/edit", api_v1.UserEdit)
+
 		v1.Post("user/remove", api_v1.UserRemove)
 		v1.Post("user/repass", api_v1.UserResetPass)
 
@@ -35,6 +37,8 @@ func Init(app *iris.Application) {
 		v1.Post("service/add", api_v1.ServiceAdd)
 		v1.Post("service/remove", api_v1.ServiceRemove)
 		v1.Get("service/list", api_v1.ServiceList)
+		v1.Post("service/on", api_v1.ServiceOn)
+		v1.Post("service/off", api_v1.ServiceOff)
 
 		v1.Post("project/add", api_v1.ProjectAdd)
 		v1.Post("project/remove", api_v1.ProjectRemove)
@@ -56,6 +60,11 @@ func Init(app *iris.Application) {
 
 		v1.Post("cron/add", api_v1.ScheduleAdd)
 		v1.Get("cron/list", api_v1.ScheduleList)
+		v1.Post("cron/start", api_v1.CronStart)
+		v1.Post("cron/stop", api_v1.CronStop)
+		v1.Post("cron/restart", api_v1.CronRestart)
+		v1.Post("cron/on", api_v1.CronOn)
+		v1.Post("cron/off", api_v1.CronOff)
 
 	}
 

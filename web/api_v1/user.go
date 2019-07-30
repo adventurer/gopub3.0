@@ -39,15 +39,6 @@ func UserAdd(ctx iris.Context) {
 		ctx.Write(model.NewResult(0, 0, err.Error(), []byte("")))
 		return
 	}
-	userForm := user
-	model.DB.Where("email = ?", user.Email).First(&user)
-	if user.ID >= 0 {
-		user.Name = userForm.Name
-		user.Role = userForm.Role
-		model.DB.Save(&user)
-		ctx.Write(model.NewResult(1, 0, "更新成功", []byte("")))
-		return
-	}
 
 	user.Status = 1
 	user.Password = "w123123"
@@ -56,7 +47,23 @@ func UserAdd(ctx iris.Context) {
 		ctx.Write(model.NewResult(0, 0, "创建用户失败", []byte("")))
 		return
 	}
-	ctx.Write(model.NewResult(1, 0, "成功", ""))
+	ctx.Write(model.NewResult(1, 0, "创建用户成功", ""))
+}
+
+func UserEdit(ctx iris.Context) {
+	user := model.User{}
+	err := ctx.ReadForm(&user)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), []byte("")))
+		return
+	}
+	model.DB.Where("email = ?", user.Email).First(&user)
+	if user.ID >= 0 {
+		user.Role = user.Role
+		user.Name = user.Name
+		model.DB.Save(&user)
+	}
+	ctx.Write(model.NewResult(1, 0, "编辑用户成功", ""))
 }
 
 func UserRemove(ctx iris.Context) {

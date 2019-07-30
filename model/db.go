@@ -9,7 +9,7 @@ var DB *gorm.DB
 
 func init() {
 	var err error
-	DB, err = gorm.Open("mysql", "root:@tcp(127.0.0.1:3306)/gopub_v3?charset=utf8&parseTime=True&loc=Local")
+	DB, err = gorm.Open("mysql", "root:112215334@tcp(192.168.1.202:3306)/gopub_v3?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err.Error())
 	}
