@@ -34,6 +34,15 @@ type InnerMachine struct {
 var innerTaskMap = make(map[int]InnerTask, 10)
 
 func TaskAudit(ctx iris.Context) {
+	userRole, err := ctx.Values().GetInt("user_role")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), []byte("")))
+		return
+	}
+	if userRole != 999 {
+		ctx.Write(model.NewResult(0, 0, "没有审核权限", []byte("")))
+		return
+	}
 	TaskID, err := ctx.PostValueInt("id")
 	if err != nil {
 		ctx.Write(model.NewResult(0, 0, err.Error(), []byte("")))
@@ -139,7 +148,7 @@ func TaskAdd(ctx iris.Context) {
 	}
 	task.ProjectName = project.Name
 	task.TicketAt = time.Now()
-	task.Audit = project.Audit
+	task.Audit = (project.Audit + 1) % 2
 	model.DB.Create(&task)
 	if task.ID < 1 {
 		ctx.Write(model.NewResult(0, 0, "写入失败", []byte("")))
@@ -163,6 +172,11 @@ func TaskRemove(ctx iris.Context) {
 	}
 	if task.Status > 0 {
 		ctx.Write(model.NewResult(0, 0, "不能删除已上线的上线单", []byte("")))
+		return
+	}
+	userName := ctx.Values().Get("user_name")
+	if task.UserName != userName {
+		ctx.Write(model.NewResult(0, 0, "不能撤销非自己的上线单", []byte("")))
 		return
 	}
 	model.DB.Delete(&task)
@@ -228,6 +242,10 @@ func TaskDeploy(ctx iris.Context) {
 	model.DB.First(&task)
 	if task.Name == "" {
 		ctx.Write(model.NewResult(0, 0, "未找到此上线单", []byte("")))
+		return
+	}
+	if task.Audit != 1 {
+		ctx.Write(model.NewResult(0, 0, "该上线单未审核", []byte("")))
 		return
 	}
 	model.DB.Model(&task).Update(model.Task{DeployAt: time.Now()})

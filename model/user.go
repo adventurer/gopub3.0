@@ -2,6 +2,7 @@ package model
 
 import (
 	"crypto/md5"
+	"errors"
 	"fmt"
 	"time"
 )
@@ -24,12 +25,12 @@ func genPasswordHash(user *User) string {
 	return fmt.Sprintf("%x", hash)
 }
 
-func ValidatePasswordHash(hash string) int {
+func ValidatePasswordHash(hash string) (user User, err error) {
 	findUser := User{}
 	DB.Where("password_hash = ?", hash).First(&findUser)
 	// log.Println(findUser)
-	if findUser.ID == 0 {
-		return 0
+	if findUser.ID <= 0 {
+		return findUser, errors.New("没有找到用户")
 	}
-	return findUser.ID
+	return findUser, nil
 }

@@ -37,10 +37,43 @@ func ScheduleAdd(ctx iris.Context) {
 }
 
 func ScheduleRemove(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	cron := model.Cron{ID: id}
+	model.DB.First(&cron)
+	if cron.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "未找到此任务", ""))
+		return
+	}
+	model.DB.Delete(&cron)
+	ctx.Write(model.NewResult(1, 0, "删除成功", ""))
 }
 
 func ScheduleLog(ctx iris.Context) {
 }
 
 func ScheduleEdit(ctx iris.Context) {
+	cronForm := model.Cron{}
+	ctx.ReadForm(&cronForm)
+	if cronForm.ID <= 0 {
+		ctx.Write(model.NewResult(0, 0, "无效的表单", ""))
+		return
+	}
+	cron := model.Cron{ID: cronForm.ID}
+	model.DB.First(&cron)
+	if cronForm.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "未找到相关修改数据", ""))
+		return
+	}
+	cron.Machine = cronForm.Machine
+	cron.Cmd = cronForm.Cmd
+	cron.Schedule = cronForm.Schedule
+	cron.Status = cronForm.Status
+	cron.Name = cronForm.Name
+	model.DB.Save(&cron)
+	ctx.Write(model.NewResult(1, 0, "修改成功", ""))
+
 }

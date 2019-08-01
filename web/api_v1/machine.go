@@ -19,6 +19,22 @@ func MachineAdd(ctx iris.Context) {
 	ctx.Write(model.NewResult(1, 0, "成功", machine))
 }
 
+func MachineRemove(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	machine := model.Machine{ID: id}
+	model.DB.First(&machine)
+	if machine.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "未找到该主机", ""))
+		return
+	}
+	model.DB.Delete(&machine)
+	ctx.Write(model.NewResult(1, 0, "删除成功", ""))
+}
+
 func MachineList(ctx iris.Context) {
 	machine := []model.Machine{}
 	model.DB.Find(&machine)

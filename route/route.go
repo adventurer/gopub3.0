@@ -30,8 +30,10 @@ func Init(app *iris.Application) {
 
 		v1.Get("welcome", api_v1.Welcome)
 		v1.Post("machine/add", api_v1.MachineAdd)
+		v1.Post("machine/remove", api_v1.MachineRemove)
 		v1.Get("machine/list", api_v1.MachineList)
 		v1.Post("machine/test", api_v1.MatchineTest)
+
 		v1.Post("proxy/off", api_v1.ProxyOff)
 		v1.Post("proxy/on", api_v1.ProxyOn)
 
@@ -47,6 +49,9 @@ func Init(app *iris.Application) {
 		v1.Post("project/hostadd", api_v1.HostAdd)
 		v1.Post("project/init", api_v1.ProjectInit)
 		v1.Post("project/chaudit", api_v1.ProjectChangeAudit)
+		v1.Post("project/steps", api_v1.ProjectSteps)
+		v1.Post("project/estep", api_v1.ProjectStepEdit)
+		v1.Post("project/rstep", api_v1.ProjectStepRemove)
 
 		v1.Post("task/getversion", api_v1.GetVersions)
 		v1.Post("task/getversioninfo", api_v1.GetVersionInfo)
@@ -60,6 +65,10 @@ func Init(app *iris.Application) {
 		v1.Post("task/deploymessage", api_v1.DeployMessage)
 
 		v1.Post("cron/add", api_v1.ScheduleAdd)
+		v1.Post("cron/remove", api_v1.ScheduleRemove)
+		v1.Post("cron/edit", api_v1.ScheduleEdit)
+		v1.Post("cron/log", api_v1.ScheduleLog)
+
 		v1.Get("cron/list", api_v1.ScheduleList)
 		v1.Post("cron/start", api_v1.CronStart)
 		v1.Post("cron/stop", api_v1.CronStop)
@@ -87,11 +96,14 @@ func midwareCrs(ctx iris.Context) {
 
 func middwareAuth(ctx iris.Context) {
 	passwordHash := ctx.GetHeader("token")
-	userID := model.ValidatePasswordHash(passwordHash)
-	if userID == 0 {
-		ctx.Write(model.NewResult(0, 400, "登录超时，请刷新后请重新登录", []byte("")))
+	user, err := model.ValidatePasswordHash(passwordHash)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 400, "登录超时，请刷新后请重新登录", []byte(err.Error())))
 		return
 	}
-	ctx.Values().Set("user_id", userID)
+	ctx.Values().Set("user_id", user.ID)
+	ctx.Values().Set("user_role", user.Role)
+	ctx.Values().Set("user_name", user.Name)
+
 	ctx.Next()
 }

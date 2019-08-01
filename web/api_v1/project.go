@@ -29,6 +29,59 @@ type DeployStep struct {
 	Action string
 }
 
+func ProjectStepRemove(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	step := model.DeployStep{ID: id}
+	model.DB.First(&step)
+	if step.Title == "" {
+		ctx.Write(model.NewResult(0, 0, "未找到该节点", ""))
+		return
+	}
+	model.DB.Delete(&step)
+	ctx.Write(model.NewResult(1, 0, "已删除节点:"+step.Title, ""))
+}
+
+func ProjectStepEdit(ctx iris.Context) {
+	projectID, err := ctx.PostValueInt("project")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+
+	step := ctx.PostValueIntDefault("step", 0)
+
+	action := ctx.PostValue("action")
+	title := ctx.PostValue("title")
+
+	stepRecord := model.DeployStep{ID: step}
+	model.DB.First(&stepRecord)
+	if step == 0 {
+		newRecord := model.DeployStep{ProjectID: projectID, Title: title, Action: action}
+		model.DB.Create(&newRecord)
+		ctx.Write(model.NewResult(1, 0, "新增成功", ""))
+		return
+	}
+	stepRecord.Action = action
+	stepRecord.Title = title
+	model.DB.Save(&stepRecord)
+	ctx.Write(model.NewResult(1, 0, "修改成功", ""))
+}
+
+func ProjectSteps(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), []byte("")))
+		return
+	}
+	steps := []model.DeployStep{}
+	model.DB.Where("project_id = ?", id).Find(&steps)
+	ctx.Write(model.NewResult(1, 0, "成功", steps))
+}
+
 func ProjectList(ctx iris.Context) {
 
 	projects := []model.Project{}
@@ -70,7 +123,7 @@ func ProjectAdd(ctx iris.Context) {
 	// new local repository
 	repoNameIndex := strings.LastIndex(project.Repo, "/")
 	if repoNameIndex < 0 {
-		ctx.Write(model.NewResult(0, 0, "创建名称必填,非法仓库地址？", []byte("")))
+		ctx.Write(model.NewResult(1, 0, "无法初始化本地仓库，非法仓库地址？", []byte("")))
 		return
 	}
 	repoName := project.Repo[repoNameIndex:]
@@ -166,7 +219,7 @@ func ProjectChangeAudit(ctx iris.Context) {
 		ctx.Write(model.NewResult(0, 0, "未找到此项目", []byte("")))
 		return
 	}
-	project.Audit = (project.ID + 1) % 2
+	project.Audit = (project.Audit + 1) % 2
 	model.DB.Save(&project)
 	ctx.Write(model.NewResult(1, 0, "修改成功", ""))
 

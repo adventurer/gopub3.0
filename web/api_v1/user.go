@@ -100,10 +100,9 @@ func UserResetByAdmin(ctx iris.Context) {
 
 func UserResetPass(ctx iris.Context) {
 	pass := ctx.PostValue("pass")
-	passwordHash := ctx.GetHeader("token")
-	userID := model.ValidatePasswordHash(passwordHash)
-	if userID == 0 {
-		ctx.Write(model.NewResult(0, 400, "登录超时，请刷新后请重新登录", []byte("")))
+	userID, err := ctx.Values().GetInt("uer_id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 400, err.Error(), []byte("")))
 		return
 	}
 	user := model.User{ID: userID}
