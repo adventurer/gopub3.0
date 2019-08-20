@@ -76,6 +76,16 @@ func Init(app *iris.Application) {
 		v1.Post("cron/on", api_v1.CronOn)
 		v1.Post("cron/off", api_v1.CronOff)
 
+		v1.Post("docker/list", api_v1.DockerContainerList)
+		v1.Post("docker/start", api_v1.DockerStartContainer)
+		v1.Post("docker/stop", api_v1.DockerStopContainer)
+		v1.Post("docker/networks", api_v1.DockerNetworkList)
+		v1.Get("docker/nattable", api_v1.DockerNatTable)
+		v1.Post("docker/addport", api_v1.DockerAddPort)
+		v1.Get("docker/ports", api_v1.DockerPortList)
+		v1.Get("docker/machines", api_v1.DockerMachines)
+		v1.Post("docker/container/deploy", api_v1.DockerContainerDeploy)
+
 	}
 
 }

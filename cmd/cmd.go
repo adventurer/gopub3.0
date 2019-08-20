@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 
 	"golang.org/x/crypto/ssh"
@@ -35,8 +36,8 @@ func RunLocal(command string) (output string, err error) {
 	stderr.Close()
 
 	if err = cmd.Wait(); err != nil {
-		fmt.Println("Execute failed when Wait:" + err.Error() + ":{" + strings.TrimSpace(string(errBytes)) + "}")
-		return "", err
+		mlog.Flog("localCommand", "[local command result]", strings.TrimSpace(string(errBytes)))
+		return "", errors.New(strings.TrimSpace(string(errBytes)))
 	}
 	mlog.Flog("localCommand", "[local command result]", string(outBytes))
 
@@ -46,18 +47,21 @@ func RunLocal(command string) (output string, err error) {
 
 // run remote command
 func RunRemote(session *ssh.Session, command string) (result string, err error) {
-	stdin, _ := session.StdinPipe()
+	// stdin, _ := session.StdinPipe()
 	stdout, _ := session.StdoutPipe()
 	stderr, _ := session.StderrPipe()
+	mlog.Flog("remoteCommand", "[remote command run]", command)
 
 	if err = session.Run(command); err != nil {
 		errBytes, _ := ioutil.ReadAll(stderr)
+		mlog.Flog("remoteCommand", "[remote command result]", string(errBytes))
 		return err.Error() + ":" + string(errBytes), err
 	}
 
-	stdin.Close()
+	// stdin.Close()
 
 	outBytes, _ := ioutil.ReadAll(stdout)
+	mlog.Flog("remoteCommand", "[remote command result]", string(outBytes))
 
 	return string(outBytes), nil
 }
