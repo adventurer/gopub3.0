@@ -3,6 +3,7 @@ package api_v1
 import (
 	"github.com/kataras/iris"
 	"gopub3.0/model"
+	"gopub3.0/nat"
 	"gopub3.0/service"
 )
 
@@ -103,7 +104,18 @@ func DockerAddPort(ctx iris.Context) {
 		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
 	}
 	model.DB.Create(&form)
-	ctx.Write(model.NewResult(1, 0, "写入成功", ""))
+	nat.DockerPort = append(nat.DockerPort, form)
+	ctx.Write(model.NewResult(1, 0, "新增成功", ""))
+}
+
+func DockerRemovePort(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+	}
+	form := model.DockerPort{ID: id}
+	model.DB.Delete(&form)
+	ctx.Write(model.NewResult(1, 0, "删除成功", ""))
 }
 
 func DockerPortList(ctx iris.Context) {

@@ -1,10 +1,10 @@
 {
-    "WorkingDir": "{GOPATH}/src/gopub3.0/",
+    "WorkingDir": "./",
     "SourceDir": [
-        "{GOPATH}/src/gopub3.0"
+        "./"
     ],
     "SourceExt": [".go",".html",".json"],
     "BuildCmd": "",
-    "RunCmd": "{GOPATH}/src/gopub3.0/gopub3.0",
+    "RunCmd": "gopub3.0",
     "Decreasing": 1
 }

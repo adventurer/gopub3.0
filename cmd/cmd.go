@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	"golang.org/x/crypto/ssh"
 	"gopub3.0/mlog"
@@ -47,21 +48,34 @@ func RunLocal(command string) (output string, err error) {
 
 // run remote command
 func RunRemote(session *ssh.Session, command string) (result string, err error) {
+	defer recoverName()
 	// stdin, _ := session.StdinPipe()
 	stdout, _ := session.StdoutPipe()
 	stderr, _ := session.StderrPipe()
 	mlog.Flog("remoteCommand", "[remote command run]", command)
 
-	if err = session.Run(command); err != nil {
+	// if err = session.Run(command); err != nil {
+	// 	errBytes, _ := ioutil.ReadAll(stderr)
+	// 	mlog.Flog("remoteCommand", "[remote command result]", string(errBytes))
+	// 	return err.Error() + ":" + string(errBytes), err
+	// }
+
+	err = session.Run(command)
+	if err != nil {
 		errBytes, _ := ioutil.ReadAll(stderr)
-		mlog.Flog("remoteCommand", "[remote command result]", string(errBytes))
+		mlog.Flog("remoteCommand", "[remote command err]", err.Error()+":"+string(errBytes))
 		return err.Error() + ":" + string(errBytes), err
 	}
-
-	// stdin.Close()
-
 	outBytes, _ := ioutil.ReadAll(stdout)
+	// stdin.Close()
 	mlog.Flog("remoteCommand", "[remote command result]", string(outBytes))
 
 	return string(outBytes), nil
+}
+
+func recoverName() {
+	if r := recover(); r != nil {
+		fmt.Println("远程命令崩溃，延迟5秒重启", r)
+		time.Sleep(1 * time.Second)
+	}
 }

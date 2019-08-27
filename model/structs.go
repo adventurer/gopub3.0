@@ -16,14 +16,15 @@ type ContainerDeploy struct {
 }
 
 type DockerPort struct {
-	ID        int    `gorm:"AUTO_INCREMENT"`
-	Name      string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
-	Port      string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
-	Ip        string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
-	ToPort    string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
-	Status    int    `gorm:"default:0"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID          int    `gorm:"AUTO_INCREMENT"`
+	Name        string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	MachineName string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Port        string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	ToIp        string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	ToPort      string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Status      int    `gorm:"default:0"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 type Cron struct {

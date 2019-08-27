@@ -1,6 +1,7 @@
 package mssh
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -13,6 +14,7 @@ var clientPool = make(map[string]*ssh.Client, 10)
 
 func init() {
 	go func() {
+		defer recoverGroutine()
 		time.Sleep(1 * time.Second)
 		for {
 			for k, client := range clientPool {
@@ -34,6 +36,7 @@ func reconnect() {
 }
 
 func Connect(machine model.Machine) (session *ssh.Session, err error) {
+	defer recoverName()
 	pKey, err := ssh.ParsePrivateKey([]byte(machine.Rsa))
 	if err != nil {
 		log.Println(err)
@@ -64,4 +67,18 @@ func Connect(machine model.Machine) (session *ssh.Session, err error) {
 		return nil, err
 	}
 	return session, nil
+}
+
+func recoverName() {
+	if r := recover(); r != nil {
+		fmt.Println("ssh连接崩溃，延迟5秒重启", r)
+		time.Sleep(1 * time.Second)
+	}
+}
+
+func recoverGroutine() {
+	if r := recover(); r != nil {
+		fmt.Println("ssh保持会话崩溃，延迟5秒重启", r)
+		time.Sleep(1 * time.Second)
+	}
 }

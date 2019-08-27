@@ -82,6 +82,8 @@ func Init(app *iris.Application) {
 		v1.Post("docker/networks", api_v1.DockerNetworkList)
 		v1.Get("docker/nattable", api_v1.DockerNatTable)
 		v1.Post("docker/addport", api_v1.DockerAddPort)
+		v1.Post("docker/removeport", api_v1.DockerRemovePort)
+
 		v1.Get("docker/ports", api_v1.DockerPortList)
 		v1.Get("docker/machines", api_v1.DockerMachines)
 		v1.Post("docker/container/deploy", api_v1.DockerContainerDeploy)

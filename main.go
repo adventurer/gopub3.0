@@ -6,7 +6,9 @@ import (
 	"github.com/kataras/iris"
 
 	"gopub3.0/cron"
+	"gopub3.0/mlog"
 	"gopub3.0/mssh"
+	_ "gopub3.0/nat"
 	"gopub3.0/route"
 )
 
@@ -14,7 +16,9 @@ func main() {
 
 	cron.Start()
 	mssh.Begin()
+
 	app := iris.New()
+	app.Use(mlog.CustomLogger)
 
 	route.Init(app)
 
