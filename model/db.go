@@ -27,7 +27,7 @@ func init() {
 	}
 	DB.LogMode(true)
 
-	DB.AutoMigrate(&User{}, &Machine{}, Service{}, Project{}, Task{}, DeployStep{}, Cron{}, DockerPort{})
+	DB.AutoMigrate(&User{}, &Machine{}, Service{}, Project{}, Task{}, DeployStep{}, Cron{}, DockerPort{}, DomainAccess{})
 	initAdmin()
 }
 

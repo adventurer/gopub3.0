@@ -23,16 +23,19 @@ func init() {
 func keepNat() {
 	for {
 		for _, dp := range DockerPort {
+			if dp.Status != 1 {
+				continue
+			}
 			machine, err := getMachine(dp.MachineName)
 			if err != nil {
 				mlog.Mlog.Println(err.Error())
 				continue
 			}
 			if !isExist(machine, dp) {
-				addRule(machine, dp)
+				AddRule(machine, dp)
 			}
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(5 * time.Second)
 	}
 }
 
@@ -69,7 +72,7 @@ func isExist(machine model.Machine, dockerPort model.DockerPort) bool {
 	return true
 }
 
-func addRule(machine model.Machine, dockerPort model.DockerPort) bool {
+func AddRule(machine model.Machine, dockerPort model.DockerPort) bool {
 	conn, err := mssh.Connect(machine)
 	if err != nil {
 		return false
@@ -80,6 +83,26 @@ func addRule(machine model.Machine, dockerPort model.DockerPort) bool {
 	mlog.Flog("nat", "[nat command result]", output)
 	if err != nil {
 		return false
+	}
+	return true
+}
+
+func RemoveRule(machine model.Machine, dockerPort model.DockerPort) bool {
+	conn, err := mssh.Connect(machine)
+	if err != nil {
+		return false
+	}
+	action := fmt.Sprintf(`iptables -t nat -D PREROUTING -p tcp --dport %s -j DNAT --to-destination %s:%s`, dockerPort.Port, dockerPort.ToIp, dockerPort.ToPort)
+	mlog.Flog("nat", "[nat command run]", action)
+	output, err := cmd.RunRemote(conn, action)
+	mlog.Flog("nat", "[nat command result]", output)
+	if err != nil {
+		return false
+	}
+	for k, dp := range DockerPort {
+		if dp.MachineName == dockerPort.MachineName {
+			DockerPort[k].Status = 0
+		}
 	}
 	return true
 }

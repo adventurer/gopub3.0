@@ -71,6 +71,15 @@ type Project struct {
 	UpdatedAt  time.Time
 }
 
+type DomainAccess struct {
+	ID           int    `gorm:"AUTO_INCREMENT"`
+	Domain       string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	AccessKeyId  string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	AccessSecret string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+}
+
 type DeployStep struct {
 	ID        int `gorm:"AUTO_INCREMENT"`
 	ProjectID int

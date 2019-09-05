@@ -46,7 +46,7 @@ func ContainerNew(machine model.Machine, containerDeploy model.ContainerDeploy) 
 	if err != nil {
 		return "", errors.New("无法连接主机")
 	}
-	action := fmt.Sprintf("docker run -itd --network %s --ip %s --name %s %s", containerDeploy.Network, containerDeploy.Ip, containerDeploy.Name, containerDeploy.Image)
+	action := fmt.Sprintf("docker run -itd --restart=always --network %s --ip %s --name %s %s", containerDeploy.Network, containerDeploy.Ip, containerDeploy.Name, containerDeploy.Image)
 	mlog.Flog("docker", "[deploy docker command run]", action)
 	output, err = cmd.RunRemote(conn, action)
 	mlog.Flog("docker", "[deploy docker command result]", output)

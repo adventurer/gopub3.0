@@ -48,7 +48,9 @@ func RunLocal(command string) (output string, err error) {
 
 // run remote command
 func RunRemote(session *ssh.Session, command string) (result string, err error) {
-	defer recoverName()
+	if session == nil {
+		return "", fmt.Errorf("ssh.session已经失效，可能因为连接中断")
+	}
 	// stdin, _ := session.StdinPipe()
 	stdout, _ := session.StdoutPipe()
 	stderr, _ := session.StderrPipe()
@@ -73,9 +75,10 @@ func RunRemote(session *ssh.Session, command string) (result string, err error) 
 	return string(outBytes), nil
 }
 
-func recoverName() {
+func recoverName() (result string, err error) {
 	if r := recover(); r != nil {
-		fmt.Println("远程命令崩溃，延迟5秒重启", r)
-		time.Sleep(1 * time.Second)
+		mlog.Mlog.Println("远程命令崩溃，延迟5秒,并返回错误", r)
+		time.Sleep(5 * time.Second)
 	}
+	return "", fmt.Errorf("ssh.session已经失效，可能因为连接中断")
 }

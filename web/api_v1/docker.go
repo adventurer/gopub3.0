@@ -113,8 +113,24 @@ func DockerRemovePort(ctx iris.Context) {
 	if err != nil {
 		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
 	}
+	machineName := ctx.PostValue("machine")
 	form := model.DockerPort{ID: id}
-	model.DB.Delete(&form)
+	model.DB.Find(&form)
+	if form.MachineName == "" {
+		ctx.Write(model.NewResult(0, 0, "未找到数据库记录", ""))
+		return
+	}
+
+	machine := model.Machine{}
+	model.DB.Where("name = ?", machineName).First(&machine)
+	if machine.ID <= 0 {
+		ctx.Write(model.NewResult(0, 0, "未找到主机", ""))
+		return
+	}
+	isDel := nat.RemoveRule(machine, form)
+	if isDel {
+		model.DB.Delete(&form)
+	}
 	ctx.Write(model.NewResult(1, 0, "删除成功", ""))
 }
 

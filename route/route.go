@@ -88,6 +88,13 @@ func Init(app *iris.Application) {
 		v1.Get("docker/machines", api_v1.DockerMachines)
 		v1.Post("docker/container/deploy", api_v1.DockerContainerDeploy)
 
+		v1.Post("domain/settingadd", api_v1.DomainSettingAdd)
+		v1.Post("domain/settingremove", api_v1.DomainSettingRemove)
+		v1.Get("domain/settinglist", api_v1.DomainSettingList)
+		v1.Post("domain/list", api_v1.DomainList)
+		v1.Post("domain/newdomain", api_v1.DomainNew)
+		v1.Post("domain/removedomain", api_v1.DomainRemove)
+
 	}
 
 }
