@@ -1,11 +1,85 @@
 package api_v1
 
 import (
+	"mime/multipart"
+	"os"
+	"strings"
+
 	"github.com/kataras/iris"
 	"gopub3.0/model"
 	"gopub3.0/nat"
 	"gopub3.0/service"
 )
+
+type Files struct {
+	Name string
+}
+
+func DockerFileRemove(ctx iris.Context) {
+	file := ctx.PostValue("File")
+	err := os.Remove("./uploads/" + file)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	ctx.Write(model.NewResult(1, 0, "删除成功", ""))
+}
+
+func DockerFileUp(ctx iris.Context) {
+	ctx.UploadFormFiles("./uploads", beforeSave)
+}
+
+func beforeSave(ctx iris.Context, file *multipart.FileHeader) {
+	ip := ctx.RemoteAddr()
+	// make sure you format the ip in a way
+	// that can be used for a file name (simple case):
+	ip = strings.Replace(ip, ".", "_", -1)
+	ip = strings.Replace(ip, ":", "_", -1)
+
+	// you can use the time.Now, to prefix or suffix the files
+	// based on the current time as well, as an exercise.
+	// i.e unixTime :=	time.Now().Unix()
+	// prefix the Filename with the $IP-
+	// no need for more actions, internal uploader will use this
+	// name to save the file into the "./uploads" folder.
+	// file.Filename = ip + "-" + file.Filename
+}
+
+func DockerFiles(ctx iris.Context) {
+	output, err := service.DockerFiles()
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	filesArr := strings.Split(strings.TrimSpace(output), "\n")
+	if len(filesArr) <= 0 {
+		ctx.Write(model.NewResult(0, 0, "目录为空", ""))
+		return
+	}
+	files := []Files{}
+	for _, file := range filesArr {
+		files = append(files, Files{Name: file})
+	}
+	ctx.Write(model.NewResult(1, 0, "获取成功", files))
+
+}
+
+func DockerFileDeploy(ctx iris.Context) {
+	machine, err := ctx.PostValueInt("Machine")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	file := ctx.PostValue("File")
+
+	Machine := model.Machine{ID: machine}
+	model.DB.First(&Machine)
+	if Machine.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "没发现机器", ""))
+		return
+	}
+	service.ContainerNewFromFile(Machine, file)
+}
 
 func DockerContainerDeploy(ctx iris.Context) {
 	container := model.ContainerDeploy{}
@@ -33,6 +107,33 @@ func DockerMachines(ctx iris.Context) {
 	machine := []model.Machine{}
 	model.DB.Where("type = ?", 2).Find(&machine)
 	ctx.Write(model.NewResult(1, 0, "获取成功", machine))
+}
+
+func DockerNetworkNew(ctx iris.Context) {
+	name := ctx.PostValue("Name")
+	if name == "" {
+		ctx.Write(model.NewResult(0, 0, "网络名称不能为空", ""))
+		return
+	}
+	subnet := ctx.PostValue("SubNet")
+	if subnet == "" {
+		ctx.Write(model.NewResult(0, 0, "子网不能为空", ""))
+		return
+	}
+	machine := ctx.PostValue("Machine")
+	if machine == "" {
+		ctx.Write(model.NewResult(0, 0, "未选择主机", ""))
+		return
+	}
+	Machine := model.Machine{}
+	model.DB.Where("id = ?", machine).First(&Machine)
+
+	ok, err := service.NewNetwork(Machine, name, subnet)
+	if !ok {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	ctx.Write(model.NewResult(1, 0, "创建成功", ""))
 }
 
 func DockerNetworkList(ctx iris.Context) {

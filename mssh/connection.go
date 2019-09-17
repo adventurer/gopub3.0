@@ -3,8 +3,11 @@ package mssh
 import (
 	"fmt"
 	"log"
+	"os"
+	"path"
 	"time"
 
+	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 	"gopub3.0/mlog"
 	"gopub3.0/model"
@@ -73,6 +76,69 @@ func Connect(machine model.Machine) (session *ssh.Session, err error) {
 		return nil, err
 	}
 	return session, nil
+}
+
+func ScpCopy(machine model.Machine, localFilePath, remoteDir string) error {
+	var (
+		sftpClient *sftp.Client
+		err        error
+	)
+	// 这里换成实际的 SSH 连接的 用户名，密码，主机名或IP，SSH端口
+	sftpClient, err = sftpconnect(machine)
+	if err != nil {
+		mlog.Mlog.Println("scpCopy:", err)
+		return err
+	}
+	defer sftpClient.Close()
+	srcFile, err := os.Open(localFilePath)
+	if err != nil {
+		mlog.Mlog.Println("scpCopy:", err)
+		return err
+	}
+	defer srcFile.Close()
+
+	var remoteFileName = path.Base(localFilePath)
+	dstFile, err := sftpClient.Create(path.Join(remoteDir, remoteFileName))
+	if err != nil {
+		mlog.Mlog.Println("scpCopy:", err)
+		return err
+	}
+	defer dstFile.Close()
+
+	buf := make([]byte, 1024)
+	for {
+		n, _ := srcFile.Read(buf)
+		if n == 0 {
+			break
+		}
+		dstFile.Write(buf[0:n])
+	}
+	return nil
+}
+
+func sftpconnect(machine model.Machine) (*sftp.Client, error) {
+	pKey, err := ssh.ParsePrivateKey([]byte(machine.Rsa))
+	if err != nil {
+		log.Println(err)
+	}
+	config := ssh.ClientConfig{
+		User: machine.User,
+		Auth: []ssh.AuthMethod{
+			ssh.PublicKeys(pKey),
+		},
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		Timeout:         10 * time.Second,
+	}
+	sshClient, err := ssh.Dial("tcp", machine.Ip+":"+machine.Port, &config)
+	if err != nil {
+		return nil, err
+	}
+	// create sftp client
+	sftpClient, err := sftp.NewClient(sshClient)
+	if err != nil {
+		return nil, err
+	}
+	return sftpClient, nil
 }
 
 func recoverConnect() (session *ssh.Session, err error) {

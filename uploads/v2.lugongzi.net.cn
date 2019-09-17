@@ -1,0 +1,10 @@
+from 16620808100/fpm:0.1.0
+WORKDIR /home/wwwroot/default
+RUN ["rm","-rf","/home/wwwroot/default"]
+RUN ["git","clone","http://192.168.1.204:3000/wuyang/www.lugongzi.net.cn.v2.main.git","/home/wwwroot/default"]
+RUN ["chmod","777","/home/wwwroot","-R"]
+RUN ["composer","install"]
+RUN ["cp","/home/wwwroot/default/.env.example","/home/wwwroot/default/.env"]
+RUN ["cp","/home/wwwroot/default/run.sh","/home/run.sh"]
+RUN ["cp","/home/wwwroot/default/laravel.conf","/usr/local/nginx/conf/vhost/laravel.conf"]
+ENTRYPOINT ["/bin/bash","/home/run.sh"]

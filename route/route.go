@@ -83,10 +83,15 @@ func Init(app *iris.Application) {
 		v1.Get("docker/nattable", api_v1.DockerNatTable)
 		v1.Post("docker/addport", api_v1.DockerAddPort)
 		v1.Post("docker/removeport", api_v1.DockerRemovePort)
+		v1.Post("docker/files", api_v1.DockerFiles)
+		v1.Any("docker/fileup", api_v1.DockerFileUp)
+		v1.Any("docker/fileremove", api_v1.DockerFileRemove)
 
 		v1.Get("docker/ports", api_v1.DockerPortList)
 		v1.Get("docker/machines", api_v1.DockerMachines)
 		v1.Post("docker/container/deploy", api_v1.DockerContainerDeploy)
+		v1.Post("docker/filedeploy", api_v1.DockerFileDeploy)
+		v1.Post("docker/network/new", api_v1.DockerNetworkNew)
 
 		v1.Post("domain/settingadd", api_v1.DomainSettingAdd)
 		v1.Post("domain/settingremove", api_v1.DomainSettingRemove)

@@ -41,6 +41,38 @@ type NatRules struct {
 
 var dockerProxyChan = make(map[string]chan bool, 0)
 
+func ContainerNewFromFile(machine model.Machine, file string) (output string, err error) {
+	action := fmt.Sprintf("docker build -t %s -f /home/%s . && docker run -d --restart=always --name %s %s", file, file, file, file)
+	conn, err := mssh.Connect(machine)
+	if err != nil {
+		return "", errors.New("无法连接主机")
+	}
+	// move file
+	err = mssh.ScpCopy(machine, "./uploads/"+file, "/home/")
+	if err != nil {
+		return output, err
+	}
+	// run command
+	mlog.Flog("docker", "[deploy dockerfile command run]", action)
+	output, err = cmd.RunRemote(conn, action)
+	mlog.Flog("docker", "[deploy dockerfile command result]", output)
+	if err != nil {
+		return output, errors.New("远程命令错误")
+	}
+	return
+}
+
+func DockerFiles() (string, error) {
+	action := fmt.Sprintf("ls ./uploads")
+	mlog.Flog("docker", "[files docker command run]", action)
+	output, err := cmd.RunLocal(action)
+	mlog.Flog("docker", "[files docker command result]", output)
+	if err != nil {
+		return output, errors.New("远程命令错误")
+	}
+	return output, nil
+}
+
 func ContainerNew(machine model.Machine, containerDeploy model.ContainerDeploy) (output string, err error) {
 	conn, err := mssh.Connect(machine)
 	if err != nil {
@@ -69,6 +101,21 @@ func NatTable(machine model.Machine) (natrules []NatRules, err error) {
 		return natrules, errors.New("远程命令错误")
 	}
 	return
+}
+
+func NewNetwork(machine model.Machine, Name string, SubNet string) (bool, error) {
+	conn, err := mssh.Connect(machine)
+	if err != nil {
+		return false, errors.New("无法连接主机")
+	}
+	action := fmt.Sprintf("docker network create -d bridge --subnet %s %s", SubNet, Name)
+	mlog.Flog("docker", "[Cnetwork command run]", action)
+	output, err := cmd.RunRemote(conn, action)
+	mlog.Flog("docker", "[Cnetwork command result]", output)
+	if err != nil {
+		return false, errors.New("远程命令错误")
+	}
+	return true, nil
 }
 
 func NetworkList(machine model.Machine) (networks []DockerNetworks, err error) {
@@ -109,7 +156,7 @@ func ContainerList(machine model.Machine) (containers []DockerContainer, err err
 	if err != nil {
 		return containers, errors.New("无法连接主机")
 	}
-	action := "docker inspect -f='{{.Id}}|{{.Name}}|{{.NetworkSettings.Networks}}|{{.State.Status}}|{{.NetworkSettings.Ports}}' $(docker ps -aq)"
+	action := "docker inspect -f='{{.Id}}|{{.Name}}|{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}|{{.State.Status}}|{{.NetworkSettings.Ports}}' $(docker ps -aq)"
 	mlog.Flog("docker", "[docker command run]", action)
 	output, err := cmd.RunRemote(conn, action)
 	mlog.Flog("docker", "[docker command result]", output)
