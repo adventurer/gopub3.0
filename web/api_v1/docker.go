@@ -240,3 +240,73 @@ func DockerPortList(ctx iris.Context) {
 	model.DB.Find(&portList)
 	ctx.Write(model.NewResult(1, 0, "成功", portList))
 }
+
+func DockerRemove(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	name := ctx.PostValue("name")
+	if name == "" {
+		ctx.Write(model.NewResult(0, 0, "容器名必须", ""))
+		return
+	}
+	machine := model.Machine{ID: id}
+	model.DB.First(&machine)
+	if machine.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "没发现机器", ""))
+		return
+	}
+	output, err := service.ContainerRemove(machine, name)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	ctx.Write(model.NewResult(1, 0, "删除成功", output))
+}
+
+func DockerImages(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	machine := model.Machine{ID: id}
+	model.DB.First(&machine)
+	if machine.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "没发现机器", ""))
+		return
+	}
+	images, err := service.ImagesList(machine)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	ctx.Write(model.NewResult(1, 0, "获取成功", images))
+
+}
+func DockerNetworkRemove(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	name := ctx.PostValue("name")
+	if name == "" {
+		ctx.Write(model.NewResult(0, 0, "网络名称不能为空", ""))
+		return
+	}
+	machine := model.Machine{ID: id}
+	model.DB.First(&machine)
+	if machine.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "没发现机器", ""))
+		return
+	}
+	output, err := service.NetworkRemove(machine, name)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	ctx.Write(model.NewResult(1, 0, "删除成功", output))
+}

@@ -36,10 +36,71 @@ type DockerNetworks struct {
 	Scope  string
 }
 
+type DockerImages struct {
+	Image string
+}
+
 type NatRules struct {
 }
 
 var dockerProxyChan = make(map[string]chan bool, 0)
+
+func ImagesList(machine model.Machine) (images []DockerImages, err error) {
+	action := "docker images --format=\"{{.Repository}}\""
+	conn, err := mssh.Connect(machine)
+	if err != nil {
+		return images, errors.New("无法连接主机")
+	}
+	// run command
+	mlog.Flog("docker", "[remove container command run]", action)
+	output, err := cmd.RunRemote(conn, action)
+	mlog.Flog("docker", "[remove container command result]", output)
+	if err != nil {
+		return images, errors.New("远程命令错误")
+	}
+	items := strings.Split(strings.TrimSpace(output), "\n")
+
+	if len(items) < 1 {
+		return images, errors.New("未发现容器")
+	}
+	for _, item := range items {
+		image := DockerImages{Image: item}
+		images = append(images, image)
+	}
+	return
+}
+
+func ContainerRemove(machine model.Machine, name string) (output string, err error) {
+	action := fmt.Sprintf("docker rm %s", name)
+	conn, err := mssh.Connect(machine)
+	if err != nil {
+		return "", errors.New("无法连接主机")
+	}
+	// run command
+	mlog.Flog("docker", "[remove container command run]", action)
+	output, err = cmd.RunRemote(conn, action)
+	mlog.Flog("docker", "[remove container command result]", output)
+	if err != nil {
+		return output, errors.New("远程命令错误")
+	}
+	return
+}
+
+func NetworkRemove(machine model.Machine, name string) (output string, err error) {
+	action := fmt.Sprintf("docker network rm %s", name)
+	conn, err := mssh.Connect(machine)
+	if err != nil {
+		return "", errors.New("无法连接主机")
+	}
+	// run command
+	mlog.Flog("docker", "[remove network command run]", action)
+	output, err = cmd.RunRemote(conn, action)
+	mlog.Flog("docker", "[remove network command result]", output)
+	if err != nil {
+		return output, errors.New("远程命令错误")
+	}
+	return
+}
 
 func ContainerNewFromFile(machine model.Machine, file string) (output string, err error) {
 	action := fmt.Sprintf("docker build -t %s -f /home/%s . && docker run -d --restart=always --name %s %s", file, file, file, file)

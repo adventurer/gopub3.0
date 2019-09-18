@@ -86,6 +86,9 @@ func Init(app *iris.Application) {
 		v1.Post("docker/files", api_v1.DockerFiles)
 		v1.Any("docker/fileup", api_v1.DockerFileUp)
 		v1.Any("docker/fileremove", api_v1.DockerFileRemove)
+		v1.Post("docker/remove", api_v1.DockerRemove)
+		v1.Post("docker/images", api_v1.DockerImages)
+		v1.Post("docker/networkremove", api_v1.DockerNetworkRemove)
 
 		v1.Get("docker/ports", api_v1.DockerPortList)
 		v1.Get("docker/machines", api_v1.DockerMachines)
