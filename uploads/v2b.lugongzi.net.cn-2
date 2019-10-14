@@ -1,7 +1,7 @@
 from 16620808100/fpm:0.1.0
 WORKDIR /home/wwwroot/default
 RUN ["rm","-rf","/home/wwwroot/default"]
-RUN ["git","clone","http://git.lugongzi.cn/wuyang/www.lugongzi.net.cn.v2.main.git","/home/wwwroot/default"]
+RUN ["git","clone","http://git.lugongzi.cn/wuyang/www.lugongzi.net.cn.v2.ctl.git","/home/wwwroot/default"]
 RUN ["chmod","777","/home/wwwroot","-R"]
 RUN ["composer","install"]
 RUN ["cp","/home/wwwroot/default/.env.online","/home/wwwroot/default/.env"]

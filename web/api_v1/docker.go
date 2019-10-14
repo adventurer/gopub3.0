@@ -15,6 +15,102 @@ type Files struct {
 	Name string
 }
 
+type NfsVolume struct {
+	Ip        string
+	Name      string
+	Directory string
+	Machine   string
+}
+
+// VolumeRemove
+func DockerVolumeRemove(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	machine := model.Machine{}
+	model.DB.Where("id = ?", id).First(&machine)
+	if machine.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "未找到机器", ""))
+		return
+	}
+	volume := ctx.PostValue("volume")
+	if volume == "" {
+		ctx.Write(model.NewResult(0, 0, "volume必须", ""))
+		return
+	}
+	output, err := service.VolumeRemove(machine, volume)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	ctx.Write(model.NewResult(1, 0, "删除成功", output))
+}
+
+// VolumeCreate
+func DockerVolumeCreate(ctx iris.Context) {
+	nfsVolume := NfsVolume{}
+	ctx.ReadForm(&nfsVolume)
+	if nfsVolume.Ip == "" || nfsVolume.Name == "" || nfsVolume.Directory == "" || nfsVolume.Machine == "" {
+		ctx.Write(model.NewResult(0, 0, "表单不完整", ""))
+		return
+	}
+	machine := model.Machine{}
+	model.DB.Where("id = ?", nfsVolume.Machine).First(&machine)
+	if machine.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "未找到机器", ""))
+		return
+	}
+	output, err := service.VolumeCreate(machine, nfsVolume.Ip, nfsVolume.Name, nfsVolume.Directory)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	ctx.Write(model.NewResult(1, 0, output, ""))
+}
+
+func DockerVolumeInspect(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	machine := model.Machine{}
+	model.DB.Where("id = ?", id).First(&machine)
+	if machine.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "未找到机器", ""))
+		return
+	}
+	volume := ctx.PostValue("volume")
+	if volume == "" {
+		ctx.Write(model.NewResult(0, 0, "volume必须", ""))
+		return
+	}
+	output, err := service.VolumeInspect(machine, volume)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	ctx.Write(model.NewResult(1, 0, "获取成功", output))
+}
+
+func DockerVolumes(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	machine := model.Machine{}
+	model.DB.Where("id = ?", id).First(&machine)
+	ret, err := service.VolumeList(machine)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	ctx.Write(model.NewResult(1, 0, "获取成功", ret))
+}
+
 func DockerFileRemove(ctx iris.Context) {
 	file := ctx.PostValue("File")
 	err := os.Remove("./uploads/" + file)
@@ -100,7 +196,6 @@ func DockerContainerDeploy(ctx iris.Context) {
 		return
 	}
 	ctx.Write(model.NewResult(1, 0, "创建成功", container))
-
 }
 
 func DockerMachines(ctx iris.Context) {
@@ -286,6 +381,7 @@ func DockerImages(ctx iris.Context) {
 	ctx.Write(model.NewResult(1, 0, "获取成功", images))
 
 }
+
 func DockerNetworkRemove(ctx iris.Context) {
 	id, err := ctx.PostValueInt("id")
 	if err != nil {
@@ -304,6 +400,31 @@ func DockerNetworkRemove(ctx iris.Context) {
 		return
 	}
 	output, err := service.NetworkRemove(machine, name)
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	ctx.Write(model.NewResult(1, 0, "删除成功", output))
+}
+
+func DockerContainerDetail(ctx iris.Context) {
+	id, err := ctx.PostValueInt("id")
+	if err != nil {
+		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
+		return
+	}
+	name := ctx.PostValue("name")
+	if name == "" {
+		ctx.Write(model.NewResult(0, 0, "网络名称不能为空", ""))
+		return
+	}
+	machine := model.Machine{ID: id}
+	model.DB.First(&machine)
+	if machine.Name == "" {
+		ctx.Write(model.NewResult(0, 0, "没发现机器", ""))
+		return
+	}
+	output, err := service.ContailerDetail(machine, name)
 	if err != nil {
 		ctx.Write(model.NewResult(0, 0, err.Error(), ""))
 		return

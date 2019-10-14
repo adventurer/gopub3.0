@@ -13,6 +13,10 @@ type ContainerDeploy struct {
 	Network string
 	Ip      string
 	Image   string
+	Hport   string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Cport   string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Hvolume string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
+	Cvolume string `gorm:"size:255"` // string默认长度为255, 使用这种tag重设。
 }
 
 type DockerPort struct {

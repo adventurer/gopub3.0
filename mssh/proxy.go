@@ -99,7 +99,7 @@ func proxyStart(hostInfo ProxyConn) {
 		mlog.Mlog.Println("sshdial err:", err)
 	}
 
-	server, err := cpoll[hostInfo.Name].sshClient.Listen("tcp", "127.0.0.1:"+hostInfo.LocalPort)
+	server, err := cpoll[hostInfo.Name].sshClient.Listen("tcp", "0.0.0.0:"+hostInfo.LocalPort)
 
 	if err != nil {
 		mlog.Mlog.Println("listen err:", err.Error())

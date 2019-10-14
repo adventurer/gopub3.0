@@ -43,7 +43,76 @@ type DockerImages struct {
 type NatRules struct {
 }
 
+type DockerVolumes struct {
+	Driver string
+	Name   string
+}
+
 var dockerProxyChan = make(map[string]chan bool, 0)
+
+func VolumeRemove(machine model.Machine, name string) (output string, err error) {
+	conn, err := mssh.Connect(machine)
+	// defer conn.Close()
+	if err != nil {
+		return output, errors.New("无法连接主机")
+	}
+	action := fmt.Sprintf("docker volume rm %s", name)
+	mlog.Flog("docker", "[docker command run]", action)
+	output, err = cmd.RunRemote(conn, action)
+	mlog.Flog("docker", "[docker command result]", output)
+	return
+}
+
+// docker volume create --driver local --opt type=nfs4 --opt o=addr=172.18.209.150,rw --opt device=:/home/data/ctl.lugongzi.cn/storage v2b.lugongzi.cn.storage
+func VolumeCreate(machine model.Machine, ip, name, directory string) (output string, err error) {
+	conn, err := mssh.Connect(machine)
+	// defer conn.Close()
+	if err != nil {
+		return output, errors.New("无法连接主机")
+	}
+	action := fmt.Sprintf("docker volume create --driver local --opt type=nfs4 --opt o=addr=%s,rw --opt device=:%s %s", ip, directory, name)
+	mlog.Flog("docker", "[docker command run]", action)
+	output, err = cmd.RunRemote(conn, action)
+	mlog.Flog("docker", "[docker command result]", output)
+	return
+}
+
+func VolumeInspect(machine model.Machine, volume string) (output string, err error) {
+	conn, err := mssh.Connect(machine)
+	// defer conn.Close()
+	if err != nil {
+		return output, errors.New("无法连接主机")
+	}
+	action := fmt.Sprintf("docker volume inspect %s", volume)
+	mlog.Flog("docker", "[docker command run]", action)
+	output, err = cmd.RunRemote(conn, action)
+	mlog.Flog("docker", "[docker command result]", output)
+	return
+}
+
+func VolumeList(machine model.Machine) (volumes []DockerVolumes, err error) {
+	conn, err := mssh.Connect(machine)
+	// defer conn.Close()
+	if err != nil {
+		return volumes, errors.New("无法连接主机")
+	}
+	action := "docker volume ls --format='{{.Driver}}|{{.Name}}'"
+	mlog.Flog("docker", "[docker command run]", action)
+	output, err := cmd.RunRemote(conn, action)
+	mlog.Flog("docker", "[docker command result]", output)
+
+	items := strings.Split(strings.TrimSpace(output), "\n")
+
+	if len(items) < 1 {
+		return volumes, errors.New("未发现容器")
+	}
+	for _, item := range items {
+		arr := strings.Split(item, "|")
+		volume := DockerVolumes{Driver: arr[0], Name: arr[1]}
+		volumes = append(volumes, volume)
+	}
+	return
+}
 
 func ImagesList(machine model.Machine) (images []DockerImages, err error) {
 	action := "docker images --format=\"{{.Repository}}\""
@@ -102,14 +171,30 @@ func NetworkRemove(machine model.Machine, name string) (output string, err error
 	return
 }
 
+func ContailerDetail(machine model.Machine, name string) (output string, err error) {
+	action := fmt.Sprintf("docker inspect %s", name)
+	conn, err := mssh.Connect(machine)
+	if err != nil {
+		return "", errors.New("无法连接主机")
+	}
+	// run command
+	mlog.Flog("docker", "[detail container command run]", action)
+	output, err = cmd.RunRemote(conn, action)
+	mlog.Flog("docker", "[detail container command result]", output)
+	if err != nil {
+		return output, errors.New("远程命令错误")
+	}
+	return
+}
+
 func ContainerNewFromFile(machine model.Machine, file string) (output string, err error) {
-	action := fmt.Sprintf("docker build -t %s -f /home/%s . && docker run -d --restart=always --name %s %s", file, file, file, file)
+	action := fmt.Sprintf("cd /home/dockerfile/ && docker build -t %s -f /home/dockerfile/%s . ", file, file)
 	conn, err := mssh.Connect(machine)
 	if err != nil {
 		return "", errors.New("无法连接主机")
 	}
 	// move file
-	err = mssh.ScpCopy(machine, "./uploads/"+file, "/home/")
+	err = mssh.ScpCopy(machine, "./uploads/"+file, "/home/dockerfile/")
 	if err != nil {
 		return output, err
 	}
@@ -139,7 +224,18 @@ func ContainerNew(machine model.Machine, containerDeploy model.ContainerDeploy) 
 	if err != nil {
 		return "", errors.New("无法连接主机")
 	}
-	action := fmt.Sprintf("docker run -itd --restart=always --network %s --ip %s --name %s %s", containerDeploy.Network, containerDeploy.Ip, containerDeploy.Name, containerDeploy.Image)
+	// action := fmt.Sprintf("docker run -itd --restart=always -v v2b.lugongzi.cn.storage:/home/wwwroot/default/storage -p%s:%s --network %s --ip %s --name %s %s", containerDeploy.Hport, containerDeploy.Cport, containerDeploy.Network, containerDeploy.Ip, containerDeploy.Name, containerDeploy.Image)
+	// action := fmt.Sprintf("docker run -itd --restart=always  -p%s:%s --network %s --ip %s --name %s %s", containerDeploy.Hport, containerDeploy.Cport, containerDeploy.Network, containerDeploy.Ip, containerDeploy.Name, containerDeploy.Image)
+
+	action := "docker run -itd --restart=always"
+	if containerDeploy.Hport != "" {
+		action += fmt.Sprintf(" -p %s:%s", containerDeploy.Hport, containerDeploy.Cport)
+	}
+	if containerDeploy.Hvolume != "" {
+		action += fmt.Sprintf(" -v %s:%s", containerDeploy.Hvolume, containerDeploy.Cvolume)
+	}
+	action += fmt.Sprintf(" --network %s --ip %s --name %s %s", containerDeploy.Network, containerDeploy.Ip, containerDeploy.Name, containerDeploy.Image)
+
 	mlog.Flog("docker", "[deploy docker command run]", action)
 	output, err = cmd.RunRemote(conn, action)
 	mlog.Flog("docker", "[deploy docker command result]", output)
@@ -259,7 +355,7 @@ func StopContainer(machine model.Machine, id string) (output string, err error) 
 		return "", errors.New("无法连接主机")
 	}
 	action := "docker stop " + id
-	mlog.Flog("docker", "[docker command run]", action)
+	mlog.Flog("docker", "[docker command run]"+machine.Ip, action)
 	output, err = cmd.RunRemote(conn, action)
 	mlog.Flog("docker", "[docker command result]", output)
 	if err != nil {
